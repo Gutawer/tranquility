@@ -30,6 +30,7 @@ actor TQ_Weapon : Weapon
 		Loop
 	Ready:
 		PISG A 1 {
+			A_SetCrosshair(99);
 			A_Overlay(2,"FSight");
 			A_Overlay(3,"RSight");
 			}
@@ -37,8 +38,8 @@ actor TQ_Weapon : Weapon
 	Idle:
 		PISG A 1 {
 			A_WeaponReady;
-			A_OverlayOffset(2,CallACS("GetOffset",0)/360,CallACS("GetOffset",1)/180);
-			A_OverlayOffset(3,CallACS("GetOffset",0)/720,CallACS("GetOffset",1)/360);
+			A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180));
+			A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360));
 			}
 		Loop
 	FSight:
@@ -48,7 +49,7 @@ actor TQ_Weapon : Weapon
 		SIGT B 1 
 		Loop
 	Fire:
-		PISG C 5 A_FireBullets(0,0,-1,1)
+		PISG C 5 A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,1,"BulletPuff",FBF_EXPLICITANGLE)
 		Goto Ready
 	}
 }

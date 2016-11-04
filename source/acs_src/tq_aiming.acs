@@ -4,22 +4,24 @@
 script "TQ_Aiming" enter
 {
 	int OffsetYaw, OffsetPitch;
+	int TempOffsetYaw, TempOffsetPitch;
 	while (1)
 	{
+		
 		//Offset player's aim by mouse movement
-		If (GetPlayerInput(-1,MODINPUT_YAW)!=0) OffsetYaw=OffsetYaw-GetPlayerInput(-1,MODINPUT_YAW);
-		If (GetPlayerInput(-1,MODINPUT_PITCH)!=0) OffsetPitch=OffsetPitch-GetPlayerInput(-1,MODINPUT_PITCH);
+		If (GetPlayerInput(-1,MODINPUT_YAW)!=0) OffsetYaw=OffsetYaw+GetPlayerInput(-1,MODINPUT_YAW);
+		If (GetPlayerInput(-1,MODINPUT_PITCH)!=0) OffsetPitch=OffsetPitch+GetPlayerInput(-1,MODINPUT_PITCH);
 		
 		//Update the offset by the velocity
-		OffsetYaw=fixedmul(OffsetYaw,0.75);
-		OffsetPitch=fixedmul(OffsetPitch,0.75);
+		OffsetYaw=fixedmul(OffsetYaw,random(0.9,0.95));
+		OffsetPitch=fixedmul(OffsetPitch,random(0.9,0.95));
 		
 		//Set the user variable for the "GetOffset" scripts
 		SetUserVariable(0,"user_offsetyaw",OffsetYaw);
 		SetUserVariable(0,"user_offsetpitch",OffsetPitch);
 		
-		Print(f:OffsetYaw,s:"\n",
-			f:OffsetPitch);
+		//Print(f:OffsetYaw,s:"\n",
+		//	f:OffsetPitch);
 
 		delay(1);
 	}
