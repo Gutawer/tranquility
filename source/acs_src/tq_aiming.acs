@@ -25,16 +25,12 @@ script "TQ_Aiming" enter
 	}
 }
 
-script "GetOffsetYaw" (void)
+script "GetOffset" (int AngleType)
 {
-	int OffsetYawCorrected;
-	OffsetYawCorrected=GetUserVariable(0,"user_offsetyaw");
-	SetResultValue(OffsetYawCorrected);
-}
-
-script "GetOffsetPitch" (void)
-{
-	int OffsetPitchCorrected;
-	OffsetPitchCorrected=GetUserVariable(0,"user_offsetpitch");
-	SetResultValue(OffsetPitchCorrected);
+	if (AngleType == 0) {
+		SetResultValue(GetUserVariable(0,"user_offsetyaw"));
+	}
+	if (AngleType == 1) {
+		SetResultValue(GetUserVariable(0,"user_offsetpitch"));
+	}
 }
