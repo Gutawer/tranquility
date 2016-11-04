@@ -37,8 +37,8 @@ actor TQ_Weapon : Weapon
 	Idle:
 		PISG A 1 {
 			A_WeaponReady;
-			A_OverlayOffset(2,CallACS("GetOffsetYaw")/360,CallACS("GetOffsetPitch")/180);
-			A_OverlayOffset(3,CallACS("GetOffsetYaw")/720,CallACS("GetOffsetPitch")/360);
+			A_OverlayOffset(2,CallACS("GetOffset",0)/360,CallACS("GetOffset",1)/180);
+			A_OverlayOffset(3,CallACS("GetOffset",0)/720,CallACS("GetOffset",1)/360);
 			}
 		Loop
 	FSight:
