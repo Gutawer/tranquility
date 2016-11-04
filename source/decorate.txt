@@ -38,15 +38,13 @@ actor TQ_Weapon : Weapon
 	Idle:
 		PISG A 1 {
 			A_WeaponReady;
-			A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180));
-			A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360));
 			}
 		Loop
 	FSight:
-		SIGT A 1 
+		SIGT A 1 A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180))
 		Loop
 	RSight:
-		SIGT B 1 
+		SIGT B 1 A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360))
 		Loop
 	Fire:
 		PISG C 5 A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,1,"BulletPuff",FBF_EXPLICITANGLE)
