@@ -1,0 +1,66 @@
+actor TQ_Ammo : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 100
+	Inventory.Icon "CLIPA0"
+	States
+	{
+	Spawn:
+		CLIP A -1
+		Stop
+	}
+}
+
+actor TQ_Weapon : Weapon
+{
+	weapon.ammouse 1
+	weapon.ammogive 20
+	weapon.ammotype "TQ_Ammo"
+	+WEAPON.DONTBOB
+	states
+	{
+	Spawn:
+		PIST A -1
+		Stop
+	Select:
+		PISG A 1 A_Raise
+		Loop
+	Deselect:
+		PISG A 1 A_Lower
+		Loop
+	Ready:
+		PISG A 1 {
+			A_Overlay(2,"FSight");
+			A_Overlay(3,"RSight");
+			}
+		Goto Idle
+	Idle:
+		PISG A 1 {
+			A_WeaponReady;
+			A_OverlayOffset(2,CallACS("GetOffsetYaw")/360,CallACS("GetOffsetPitch")/180);
+			A_OverlayOffset(3,CallACS("GetOffsetYaw")/720,CallACS("GetOffsetPitch")/360);
+			}
+		Loop
+	FSight:
+		SIGT A 1 
+		Loop
+	RSight:
+		SIGT B 1 
+		Loop
+	Fire:
+		PISG C 5 A_FireBullets(0,0,-1,1)
+		Goto Ready
+	}
+}
+
+Actor TQ_Player : Doomplayer
+{
+	Player.StartItem "TQ_Weapon"
+	Player.StartItem "TQ_Ammo", 50
+	Player.Viewheight 50
+	Player.AttackZOffset 20
+	Player.ForwardMove 0.4
+	Player.SideMove 0.3
+	var float user_offsetyaw;
+	var float user_offsetpitch;
+}
