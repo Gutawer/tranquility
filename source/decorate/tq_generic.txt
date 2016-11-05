@@ -1,8 +1,26 @@
 //------------------------------------------------------------
 //
-// Generic ammo and weapon definitions for inheritance
+// Generic counters, ammo, weapon definitions for inheritance
 //
 //------------------------------------------------------------
+
+actor TQ_InventoryCounter : Inventory		// Modified from Vaecrius' Hideous Destructor
+{
+	+inventory.untossable
+	inventory.maxamount 1
+	inventory.amount 1
+	+noclip
+	height 0
+	radius 0
+	states
+	{
+	spawn:
+		TNT1 A 0
+		stop
+	}
+}
+
+actor TQ_AimDownSights : TQ_InventoryCounter {}
 
 actor TQ_Ammo : Ammo
 {
@@ -35,22 +53,41 @@ actor TQ_Weapon : Weapon
 		PISG A 1 A_Lower
 		Loop
 	Ready:
-		//Set up weapon defaults, fall-through to main ready state after
-		PISG A 1 {
-			A_SetCrosshair(99);
-			A_Overlay(2,"FSight");
-			A_Overlay(3,"RSight");	}
-	Ready2:
-		PISG A 1 A_WeaponReady
+		PISG A 1
+		{
+			A_WeaponReady;
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				A_Overlay(2,"FSight");
+				A_Overlay(3,"RSight");
+				A_SetCrosshair(99);
+			}
+			else
+			{
+				A_SetCrosshair(98);
+			}
+		}
 		Loop
 	FSight:
 		SIGT A 1 A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180))
-		Loop
+		Stop
 	RSight:
 		SIGT B 1 A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360))
-		Loop
+		Stop
 	Fire:
 		PISG C 5 A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,1,"BulletPuff",FBF_EXPLICITANGLE|FBF_USEAMMO)
-		Goto Ready2
+		Goto Ready
+	AltFire:
+		PISG B 5 {
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				A_TakeInventory("TQ_AimDownSights");
+			}
+			else
+			{
+				A_GiveInventory("TQ_AimDownSights");
+			}
+		}
+		goto Ready
 	}
 }
