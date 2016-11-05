@@ -10,9 +10,9 @@
 script "GetOffset" (int AngleType)
 {
 	if (AngleType == 0) {
-		SetResultValue(GetUserVariable(0,"user_offsetyaw"));
+		SetResultValue(GetUserVariable(0,"user_offsetyaw")/360);
 	}
 	if (AngleType == 1) {
-		SetResultValue(GetUserVariable(0,"user_offsetpitch"));
+		SetResultValue(GetUserVariable(0,"user_offsetpitch")/180);
 	}
 }

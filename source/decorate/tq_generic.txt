@@ -118,7 +118,7 @@ actor TQ_GenericWeapon : Weapon
 		SIGT A 1
 		"####" "#" 1
 		{
-			A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180));
+			A_OverlayOffset(2,CAllACS("GetOffset",0)*(-1),CAllACS("GetOffset",1)*(-1));
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
 				return state("FSight");
@@ -133,7 +133,7 @@ actor TQ_GenericWeapon : Weapon
 		SIGT B 1
 		"####" "#" 1
 		{
-			A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360));
+			A_OverlayOffset(3,CAllACS("GetOffset",0)*2,CAllACS("GetOffset",1));
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
 				return state("RSight");
