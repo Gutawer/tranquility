@@ -4,7 +4,7 @@
 //
 //------------------------------------------------------------
 
-Actor TQ_9mm_Round : TQ_GenericAmmo
+Actor TQ_9mm_Round : Ammo
 {
 	Inventory.PickupMessage "Picked up a round of 9mm"
 	Inventory.Amount 1
@@ -66,11 +66,11 @@ ACTOR TQ_9mm_Pistol : TQ_GenericWeapon
 		Loop
 	Fire:
 		PISG A 1
-		PISG B 2 
 		{ 
 			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",0)*2,1,0,0,0,CAllACS("GetOffset",1)*2);
 			//A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,5,"BulletPuff",FBF_EXPLICITANGLE);
 		}
+		PISG B 2 
 		PISG C 2
 		Goto Ready
 	}
