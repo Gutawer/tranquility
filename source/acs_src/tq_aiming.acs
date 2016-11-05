@@ -27,13 +27,3 @@ script "TQ_Aiming" enter
 		delay(1);
 	}
 }
-
-script "GetOffset" (int AngleType)
-{
-	if (AngleType == 0) {
-		SetResultValue(GetUserVariable(0,"user_offsetyaw"));
-	}
-	if (AngleType == 1) {
-		SetResultValue(GetUserVariable(0,"user_offsetpitch"));
-	}
-}

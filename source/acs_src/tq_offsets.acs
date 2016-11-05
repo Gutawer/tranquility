@@ -1,0 +1,18 @@
+#library "TQ_Offset"
+#include "zcommon.acs"
+
+//------------------------------------------------------------
+//
+// Script to return yaw and pitch offset uservars
+//
+//------------------------------------------------------------
+
+script "GetOffset" (int AngleType)
+{
+	if (AngleType == 0) {
+		SetResultValue(GetUserVariable(0,"user_offsetyaw"));
+	}
+	if (AngleType == 1) {
+		SetResultValue(GetUserVariable(0,"user_offsetpitch"));
+	}
+}
