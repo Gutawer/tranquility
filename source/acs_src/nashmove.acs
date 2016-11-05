@@ -1,6 +1,12 @@
 #library "nashmove"
 #include "zcommon.acs"
 
+//------------------------------------------------------------
+//
+// Imported NashMove, updated only FRICTION_FACTOR
+//
+//------------------------------------------------------------
+
 // check if player is on ground
 function int CheckPlayerOnGround(void)
 {

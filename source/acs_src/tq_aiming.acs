@@ -1,29 +1,56 @@
 #library "TQ_Aiming"
 #include "zcommon.acs"
 
+//------------------------------------------------------------
+//
+// Manage aim offsets
+//
+//------------------------------------------------------------
+
+// Update offsets by mouse movement
 script "TQ_Aiming" enter
 {
 	int OffsetYaw, OffsetPitch;
 	while (1)
-	{
+	{	
+		OffsetYaw = GetUserVariable(0,"user_offsetyaw");
+		OffsetPitch = GetUserVariable(0,"user_offsetpitch");
 		
-		//Offset player's aim by mouse movement
 		If (GetPlayerInput(-1,MODINPUT_YAW)!=0) OffsetYaw=OffsetYaw+GetPlayerInput(-1,MODINPUT_YAW);
 		If (GetPlayerInput(-1,MODINPUT_PITCH)!=0) OffsetPitch=OffsetPitch+GetPlayerInput(-1,MODINPUT_PITCH);
 		
-		//Decrease the offset
-		OffsetYaw=(fixedmul(OffsetYaw,0.9));
-		OffsetPitch=(fixedmul(OffsetPitch,0.9));
-		//OffsetYaw=OffsetYaw-fixedmul(OffsetDelta,0.9);
-		//OffsetPitch=OffsetPitch-fixedmul(OffsetDelta,0.9);
-		
-		//Set the user variable for the "GetOffset" scripts
 		SetUserVariable(0,"user_offsetyaw",OffsetYaw);
 		SetUserVariable(0,"user_offsetpitch",OffsetPitch);
 		
-		//Print(f:OffsetYaw,s:"\n",
-		//	f:OffsetPitch);
+		delay(1);
+	}
+}
 
+//Return offsets to zero 
+script "TQ_OffsetReturn" enter
+{
+	int OffsetYaw, OffsetPitch;
+	int OffsetYawVel, OffsetPitchVel;
+	int VelFactor = 0.05;
+	int VelDecay = 0.9;
+	
+	while (1)
+	{
+		OffsetYaw = GetUserVariable(0,"user_offsetyaw");
+		OffsetPitch = GetUserVariable(0,"user_offsetpitch");
+		
+		OffsetYawVel = OffsetYawVel+(fixedmul(OffsetYaw,VelFactor));
+		OffsetPitchVel = OffsetPitchVel+(fixedmul(OffsetPitch,VelFactor));
+		
+		OffsetYaw=OffsetYaw-OffsetYawVel;
+		OffsetPitch=OffsetPitch-OffsetPitchVel;
+		
+		OffsetYawVel=(fixedmul(OffsetYawVel,VelDecay));
+		OffsetPitchVel=(fixedmul(OffsetPitchVel,VelDecay));
+		
+		SetUserVariable(0,"user_offsetyaw",OffsetYaw);
+		SetUserVariable(0,"user_offsetpitch",OffsetPitch);
+		
 		delay(1);
 	}
 }
