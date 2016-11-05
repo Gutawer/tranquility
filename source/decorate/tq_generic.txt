@@ -22,8 +22,6 @@ actor TQ_GenericCounter : Inventory		// Modified from Vaecrius' Hideous Destruct
 
 actor TQ_AimDownSights : TQ_GenericCounter {}
 
-actor TQ_GenericAmmo : Ammo {}
-
 Actor TQ_GenericBullet : FastProjectile
 {
 	Height 1
