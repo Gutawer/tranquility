@@ -49,10 +49,20 @@ ACTOR TQ_9mm_Pistol : TQ_GenericWeapon
 		PISG A 1 A_WeaponReady
 		Loop
 	Deselect:
-		PISG A 1 A_Lower
+		PISG A 1
+		{
+			A_Lower;
+			A_TakeInventory("TQ_AimDownSights");
+			A_SetCrosshair(0);
+		}
 		Loop
 	Select:
-		PISG A 1 A_Raise
+		PISG A 1
+		{
+			A_Raise;
+			A_TakeInventory("TQ_AimDownSights");
+			A_SetCrosshair(98);
+		}
 		Loop
 	Fire:
 		PISG A 4
