@@ -1,2 +1,3 @@
 tq_aiming
+tq_offset
 nashmove
