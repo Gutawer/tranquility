@@ -65,14 +65,13 @@ ACTOR TQ_9mm_Pistol : TQ_GenericWeapon
 		}
 		Loop
 	Fire:
-		PISG A 4
-		PISG B 6 
+		PISG A 1
+		PISG B 2 
 		{ 
 			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",0)/(180),1,0,0,0,CAllACS("GetOffset",1)/(90));
 			//A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,5,"BulletPuff",FBF_EXPLICITANGLE);
 		}
-		PISG C 4
-		PISG B 5 A_ReFire
+		PISG C 2
 		Goto Ready
 	}
 }
