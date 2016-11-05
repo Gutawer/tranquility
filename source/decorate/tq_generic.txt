@@ -22,18 +22,7 @@ actor TQ_GenericCounter : Inventory		// Modified from Vaecrius' Hideous Destruct
 
 actor TQ_AimDownSights : TQ_GenericCounter {}
 
-actor TQ_GenericAmmo : Ammo
-{
-	Inventory.Amount 1
-	Inventory.MaxAmount 100
-	Inventory.Icon "CLIPA0"
-	States
-	{
-	Spawn:
-		CLIP A -1
-		Stop
-	}
-}
+actor TQ_GenericAmmo : Ammo {}
 
 Actor TQ_GenericBullet : FastProjectile
 {
@@ -58,10 +47,44 @@ Actor TQ_GenericBullet : FastProjectile
 	}
 }
 
+Actor TQ_BulletPuff : BulletPuff
+{
+	radius 1
+	height 1
+	BounceType "Doom"
+	RenderStyle Translucent
+	Scale .75
+	vspeed 0
+	Alpha 0.75
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		PUFF CD random(1,2) A_ChangeVelocity(velx*.5,vely*.5,(velz*.5)-.1,CVF_REPLACE)
+		TNT1 A 0 A_SetTranslucent(alpha*.5,0)
+		PUFF DE random(2,4) A_ChangeVelocity(velx*.5,vely*.5,(velz*.5)-.1,CVF_REPLACE)
+		TNT1 A 0 A_SetTranslucent(alpha*.5,0)
+		PUFF EF random(4,8) A_ChangeVelocity(velx*.5,vely*.5,(velz*.5)-.1,CVF_REPLACE)
+		TNT1 A 0 A_SetTranslucent(alpha*.5,0)
+		PUFF FG random(8,16) A_ChangeVelocity(velx*.5,vely*.5,(velz*.5)-.1,CVF_REPLACE)
+		TNT1 A 0 A_SetTranslucent(alpha*.5,0)
+		PUFF GG random(16,32) A_ChangeVelocity(velx*.5,vely*.5,(velz*.5)-.1,CVF_REPLACE)
+		Stop
+	Melee:
+		TNT1 A 0
+		PUFF CD random(2,4) A_ChangeVelocity(.5,.5,-1)
+		TNT1 A 0 A_SetTranslucent(alpha*.5,0)
+		PUFF EF random(4,8) A_ChangeVelocity(.5,.5,-1)
+		TNT1 A 0 A_SetTranslucent(alpha*.5,0)
+		PUFF GG random(8,16) A_ChangeVelocity(.5,.5,-1)
+		Stop
+  }
+}
+
 actor TQ_GenericWeapon : Weapon
 {
 	Weapon.KickBack 100
-	Weapon.BobRangeX 0.45
+	Weapon.BobRangeX 0.65
 	Weapon.BobRangeY 0.5
 	Weapon.BobSpeed 2.5
 	Weapon.BobStyle InverseSmooth
@@ -71,34 +94,6 @@ actor TQ_GenericWeapon : Weapon
 	{
 	Spawn:
 		TNT1 A 1
-		Stop
-	FSight:
-		SIGT A 1
-		{
-			A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180));
-			if(CountInv("TQ_AimDownSights") > 0)
-			{
-				return state("FSight");
-			}
-			else
-			{
-				return state("");
-			}
-		}
-		Stop
-	RSight:
-		SIGT B 1 
-		{
-			A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360));
-			if(CountInv("TQ_AimDownSights") > 0)
-			{
-				return state("RSight");
-			}
-			else
-			{
-				return state("");
-			}
-		}
 		Stop
 	AltFire:
 		"####" "#" 5
@@ -116,6 +111,40 @@ actor TQ_GenericWeapon : Weapon
 				A_SetCrosshair(99);
 			}
 		}
-		Goto Ready
+		"####" "#" 0 { return state("Ready"); }
+	FSight:
+		SIGT A 1
+		"####" "#" 1
+		{
+			A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180));
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				return state("FSight");
+			}
+			else
+			{
+				return state("StopSights");
+			}
+		}
+		Stop
+	RSight:
+		SIGT B 1
+		"####" "#" 1
+		{
+			A_Print("test");
+			A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360));
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				return state("RSight");
+			}
+			else
+			{
+				return state("StopSights");
+			}
+		}
+		Stop
+	StopSights:
+		TNT1 A 1
+		Stop
 	}
 }
