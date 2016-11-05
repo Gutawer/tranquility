@@ -19,7 +19,7 @@ Actor TQ_Player : Doomplayer
 	Player.Viewheight 50
 	Player.AttackZOffset 20
 	Player.ForwardMove 1.0
-	Player.SideMove 0.75
+	Player.SideMove 0.8
 	var float user_offsetyaw;
 	var float user_offsetpitch;
 }
