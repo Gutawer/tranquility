@@ -17,7 +17,7 @@ actor TQ_Weapon : Weapon
 	weapon.ammogive 20
 	weapon.ammotype "TQ_Ammo"
 	+WEAPON.DONTBOB
-	states
+	States
 	{
 	Spawn:
 		PIST A -1
@@ -32,13 +32,10 @@ actor TQ_Weapon : Weapon
 		PISG A 1 {
 			A_SetCrosshair(99);
 			A_Overlay(2,"FSight");
-			A_Overlay(3,"RSight");
-			}
-		Goto Idle
-	Idle:
-		PISG A 1 {
-			A_WeaponReady;
-			}
+			A_Overlay(3,"RSight"); }
+		Goto Ready2
+	Ready2:
+		PISG A 1 A_WeaponReady
 		Loop
 	FSight:
 		SIGT A 1 A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180))
@@ -47,8 +44,8 @@ actor TQ_Weapon : Weapon
 		SIGT B 1 A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360))
 		Loop
 	Fire:
-		PISG C 5 A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,1,"BulletPuff",FBF_EXPLICITANGLE)
-		Goto Ready
+		PISG C 5 A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,1,"BulletPuff",FBF_EXPLICITANGLE|FBF_USEAMMO)
+		Goto Ready2
 	}
 }
 
