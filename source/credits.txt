@@ -1,0 +1,10 @@
+Inspiration
+
+- vaecrius (Matt) for Hideous Destructor
+- David Rosen and Wolfire Games for Receiver
+- Bohemia Interactive for the Arma series
+
+Code
+
+- Nash Muhandes
+	NashMove (Less Slippery Doom Movement)
