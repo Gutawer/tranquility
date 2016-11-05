@@ -4,7 +4,6 @@
 script "TQ_Aiming" enter
 {
 	int OffsetYaw, OffsetPitch;
-	int OffsetYawDelta, OffsetPitchDelta;
 	while (1)
 	{
 		
@@ -12,9 +11,9 @@ script "TQ_Aiming" enter
 		If (GetPlayerInput(-1,MODINPUT_YAW)!=0) OffsetYaw=OffsetYaw+GetPlayerInput(-1,MODINPUT_YAW);
 		If (GetPlayerInput(-1,MODINPUT_PITCH)!=0) OffsetPitch=OffsetPitch+GetPlayerInput(-1,MODINPUT_PITCH);
 		
-		//Update the offset by the velocity
-		OffsetYaw=OffsetYaw-(fixedmul(OffsetYaw,0.1));
-		OffsetPitch=OffsetPitch-(fixedmul(OffsetPitch,0.1));
+		//Decrease the offset
+		OffsetYaw=(fixedmul(OffsetYaw,0.9));
+		OffsetPitch=(fixedmul(OffsetPitch,0.9));
 		//OffsetYaw=OffsetYaw-fixedmul(OffsetDelta,0.9);
 		//OffsetPitch=OffsetPitch-fixedmul(OffsetDelta,0.9);
 		
