@@ -5,6 +5,7 @@
 //------------------------------------------------------------
 #include "decorate/nashmove.txt"
 #include "decorate/tq_generic.txt"
+#include "decorate/tq_9mm_pistol.txt"
 
 //------------------------------------------------------------
 //
@@ -13,8 +14,8 @@
 //------------------------------------------------------------
 Actor TQ_Player : Doomplayer
 {
-	Player.StartItem "TQ_Weapon"
-	Player.StartItem "TQ_Ammo", 50
+	Player.StartItem "TQ_9mm_Pistol"
+	Player.StartItem "TQ_9mm_Round", 50
 	Player.Viewheight 50
 	Player.AttackZOffset 20
 	Player.ForwardMove 1.0

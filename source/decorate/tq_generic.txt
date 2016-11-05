@@ -4,7 +4,7 @@
 //
 //------------------------------------------------------------
 
-actor TQ_InventoryCounter : Inventory		// Modified from Vaecrius' Hideous Destructor
+actor TQ_GenericCounter : Inventory		// Modified from Vaecrius' Hideous Destructor
 {
 	+inventory.untossable
 	inventory.maxamount 1
@@ -20,9 +20,9 @@ actor TQ_InventoryCounter : Inventory		// Modified from Vaecrius' Hideous Destru
 	}
 }
 
-actor TQ_AimDownSights : TQ_InventoryCounter {}
+actor TQ_AimDownSights : TQ_GenericCounter {}
 
-actor TQ_Ammo : Ammo
+actor TQ_GenericAmmo : Ammo
 {
 	Inventory.Amount 1
 	Inventory.MaxAmount 100
@@ -35,59 +35,87 @@ actor TQ_Ammo : Ammo
 	}
 }
 
-actor TQ_Weapon : Weapon
+Actor TQ_GenericBullet : FastProjectile
 {
-	weapon.ammouse 1
-	weapon.ammogive 20
-	weapon.ammotype "TQ_Ammo"
-	+WEAPON.DONTBOB
+	Height 1
+	Radius 1
+	Speed 1
+	Scale .1
+	Decal "BulletChip"
+	+BLOODSPLATTER
+	+NOEXTREMEDEATH
 	States
 	{
 	Spawn:
-		PIST A -1
+		TNT1 A 1 Bright A_ChangeVelocity(frandom(-0.9,0.9),frandom(-0.9,0.9),-1)
+		Loop
+	Death:
+		TNT1 A 1
 		Stop
-	Select:
-		PISG A 1 A_Raise
-		Loop
-	Deselect:
-		PISG A 1 A_Lower
-		Loop
-	Ready:
-		PISG A 1
+	XDeath:
+		TNT1 A 1
+		Stop
+	}
+}
+
+actor TQ_GenericWeapon : Weapon
+{
+	Weapon.KickBack 100
+	Weapon.BobRangeX 0.45
+	Weapon.BobRangeY 0.5
+	Weapon.BobSpeed 2.5
+	Weapon.BobStyle InverseSmooth
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NO_AUTO_SWITCH
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		Stop
+	FSight:
+		SIGT A 1
 		{
-			A_WeaponReady;
+			A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180));
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
-				A_Overlay(2,"FSight");
-				A_Overlay(3,"RSight");
-				A_SetCrosshair(99);
+				return state("FSight");
 			}
 			else
 			{
-				A_SetCrosshair(98);
+				return state("");
 			}
 		}
-		Loop
-	FSight:
-		SIGT A 1 A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180))
 		Stop
 	RSight:
-		SIGT B 1 A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360))
+		SIGT B 1 
+		{
+			A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360));
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				return state("RSight");
+			}
+			else
+			{
+				return state("");
+			}
+		}
 		Stop
-	Fire:
-		PISG C 5 A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,1,"BulletPuff",FBF_EXPLICITANGLE|FBF_USEAMMO)
-		Goto Ready
 	AltFire:
-		PISG B 5 {
+		"####" "#" 5
+		{
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
 				A_TakeInventory("TQ_AimDownSights");
+				A_SetCrosshair(98);
 			}
 			else
 			{
 				A_GiveInventory("TQ_AimDownSights");
+				A_Overlay(2,"FSight");
+				A_Overlay(3,"RSight");
+				A_SetCrosshair(99);
 			}
 		}
-		goto Ready
+		Goto Ready
 	}
 }
