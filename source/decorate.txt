@@ -1,68 +1,16 @@
-// checks for collision against ground and other solid actors
-Actor Nash_FloorCheck
-{
-	Radius 16
-	Height 4
-	+SOLID
-	States
-	{
-		Spawn:
-			TNT1 A 1
-			Stop
-	}
-}
+//------------------------------------------------------------
+//
+// Includes
+//
+//------------------------------------------------------------
+#include "decorate/nashmove.txt"
+#include "decorate/tq_generic.txt"
 
-actor TQ_Ammo : Ammo
-{
-	Inventory.Amount 1
-	Inventory.MaxAmount 100
-	Inventory.Icon "CLIPA0"
-	States
-	{
-	Spawn:
-		CLIP A -1
-		Stop
-	}
-}
-
-actor TQ_Weapon : Weapon
-{
-	weapon.ammouse 1
-	weapon.ammogive 20
-	weapon.ammotype "TQ_Ammo"
-	+WEAPON.DONTBOB
-	States
-	{
-	Spawn:
-		PIST A -1
-		Stop
-	Select:
-		PISG A 1 A_Raise
-		Loop
-	Deselect:
-		PISG A 1 A_Lower
-		Loop
-	Ready:
-		PISG A 1 {
-			A_SetCrosshair(99);
-			A_Overlay(2,"FSight");
-			A_Overlay(3,"RSight"); }
-		Goto Ready2
-	Ready2:
-		PISG A 1 A_WeaponReady
-		Loop
-	FSight:
-		SIGT A 1 A_OverlayOffset(2,CAllACS("GetOffset",0)/(-360),CAllACS("GetOffset",1)/-(180))
-		Loop
-	RSight:
-		SIGT B 1 A_OverlayOffset(3,CAllACS("GetOffset",0)/(720),CAllACS("GetOffset",1)/(360))
-		Loop
-	Fire:
-		PISG C 5 A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,1,"BulletPuff",FBF_EXPLICITANGLE|FBF_USEAMMO)
-		Goto Ready2
-	}
-}
-
+//------------------------------------------------------------
+//
+// Player Definition
+//
+//------------------------------------------------------------
 Actor TQ_Player : Doomplayer
 {
 	Player.StartItem "TQ_Weapon"
