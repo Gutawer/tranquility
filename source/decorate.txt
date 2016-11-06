@@ -20,6 +20,8 @@ Actor TQ_Player : Doomplayer
 	Player.AttackZOffset 20
 	Player.ForwardMove 1.0
 	Player.SideMove 0.8
-	var float user_offsetyaw;
-	var float user_offsetpitch;
+	var float user_offsetheadyaw;
+	var float user_offsetheadpitch;
+	var float user_offsetweaponyaw;
+	var float user_offsetweaponpitch;
 }

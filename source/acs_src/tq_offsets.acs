@@ -10,9 +10,15 @@
 script "GetOffset" (int AngleType)
 {
 	if (AngleType == 0) {
-		SetResultValue(GetUserVariable(0,"user_offsetyaw")/360);
+		SetResultValue(GetUserVariable(0,"user_offsetheadyaw")/360);
 	}
 	if (AngleType == 1) {
-		SetResultValue(GetUserVariable(0,"user_offsetpitch")/180);
+		SetResultValue(GetUserVariable(0,"user_offsetheadpitch")/180);
+	}
+	if (AngleType == 2) {
+		SetResultValue(GetUserVariable(0,"user_offsetweaponyaw")/360);
+	}
+	if (AngleType == 3) {
+		SetResultValue(GetUserVariable(0,"user_offsetweaponpitch")/180);
 	}
 }

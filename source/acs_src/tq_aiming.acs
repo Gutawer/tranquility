@@ -7,20 +7,37 @@
 //
 //------------------------------------------------------------
 
-// Update offsets by mouse movement
-script "TQ_Aiming" enter
+
+//Begin implementing eye, head, weapon, offsets
+script "TQ_Tracking" enter
 {
-	int OffsetYaw, OffsetPitch;
-	while (1)
-	{	
-		OffsetYaw = GetUserVariable(0,"user_offsetyaw");
-		OffsetPitch = GetUserVariable(0,"user_offsetpitch");
+	int EyeYaw, EyePitch;
+	int OffsetHeadYaw, OffsetHeadPitch;
+	int OffsetWeaponYaw, OffsetWeaponPitch;
+	while(1)
+	{		
+		//Get instant offsets for player looking
+		EyeYaw=GetPlayerInput(-1,MODINPUT_YAW);
+		EyePitch=GetPlayerInput(-1,MODINPUT_PITCH);
 		
-		If (GetPlayerInput(-1,MODINPUT_YAW)!=0) OffsetYaw=OffsetYaw+GetPlayerInput(-1,MODINPUT_YAW);
-		If (GetPlayerInput(-1,MODINPUT_PITCH)!=0) OffsetPitch=OffsetPitch+GetPlayerInput(-1,MODINPUT_PITCH);
+		//Subtract offsets from current head and weapon offsets,
+		//so they "stay still" by comparison
+		OffsetHeadYaw=GetUserVariable(0,"user_offsetheadyaw")-EyeYaw;
+		OffsetHeadPitch=GetUserVariable(0,"user_offsetheadpitch")-EyePitch;
 		
-		SetUserVariable(0,"user_offsetyaw",OffsetYaw);
-		SetUserVariable(0,"user_offsetpitch",OffsetPitch);
+		OffsetWeaponYaw=GetUserVariable(0,"user_offsetweaponyaw")-EyeYaw;
+		OffsetWeaponPitch=GetUserVariable(0,"user_offsetweaponpitch")-EyePitch;
+		
+		//Print yaw angles only for debugging
+		print(f:EyeYaw,s:"\n",
+			f:OffsetHeadYaw,s:"\n",
+			f:OffsetWeaponYaw,s:"\n");
+		
+		SetUserVariable(0,"user_offsetheadyaw",OffsetHeadYaw);
+		SetUserVariable(0,"user_offsetheadpitch",OffsetHeadPitch);
+		
+		SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
+		SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
 		
 		delay(1);
 	}
@@ -29,27 +46,36 @@ script "TQ_Aiming" enter
 //Return offsets to zero 
 script "TQ_OffsetReturn" enter
 {
-	int OffsetYaw, OffsetPitch;
-	int OffsetYawVel, OffsetPitchVel;
-	int VelFactor = 0.05;
-	int VelDecay = 0.9;
+	int OffsetWeaponYaw, OffsetWeaponPitch;
+	int OffsetWeaponYawVel, OffsetWeaponPitchVel;
+	int OffsetHeadYaw, OffsetHeadPitch;
+	int VelFactor = 0.025;
+	int VelDecay = 0.85;
 	
 	while (1)
 	{
-		OffsetYaw = GetUserVariable(0,"user_offsetyaw");
-		OffsetPitch = GetUserVariable(0,"user_offsetpitch");
+		//Return weapon offsets by velocity to give "spring" effect
+		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
+		OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
 		
-		OffsetYawVel = OffsetYawVel+(fixedmul(OffsetYaw,VelFactor));
-		OffsetPitchVel = OffsetPitchVel+(fixedmul(OffsetPitch,VelFactor));
+		OffsetWeaponYawVel = OffsetWeaponYawVel+(fixedmul(OffsetWeaponYaw,VelFactor));
+		OffsetWeaponPitchVel = OffsetWeaponPitchVel+(fixedmul(OffsetWeaponPitch,VelFactor));
 		
-		OffsetYaw=OffsetYaw-OffsetYawVel;
-		OffsetPitch=OffsetPitch-OffsetPitchVel;
+		OffsetWeaponYaw=OffsetWeaponYaw-OffsetWeaponYawVel;
+		OffsetWeaponPitch=OffsetWeaponPitch-OffsetWeaponPitchVel;
 		
-		OffsetYawVel=(fixedmul(OffsetYawVel,VelDecay));
-		OffsetPitchVel=(fixedmul(OffsetPitchVel,VelDecay));
+		OffsetWeaponYawVel=(fixedmul(OffsetWeaponYawVel,VelDecay));
+		OffsetWeaponPitchVel=(fixedmul(OffsetWeaponPitchVel,VelDecay));
 		
-		SetUserVariable(0,"user_offsetyaw",OffsetYaw);
-		SetUserVariable(0,"user_offsetpitch",OffsetPitch);
+		SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
+		SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
+		
+		//Return head offsets smoothly, no spring
+		OffsetHeadYaw=fixedmul(GetUserVariable(0,"user_offsetheadyaw"),0.5);
+		OffsetHeadPitch=fixedmul(GetUserVariable(0,"user_offsetheadpitch"),0.5);
+		
+		SetUserVariable(0,"user_offsetheadyaw",OffsetHeadYaw);
+		SetUserVariable(0,"user_offsetheadpitch",OffsetHeadPitch);
 		
 		delay(1);
 	}

@@ -78,7 +78,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 	Fire:
 		PISG A 1
 		{ 
-			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",0)*2,1,0,0,0,CAllACS("GetOffset",1)*2);
+			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(-1.5),1,0,0,0,CAllACS("GetOffset",3)*(-1.5));
 			//A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,5,"BulletPuff",FBF_EXPLICITANGLE);
 		}
 		PISG B 2 
@@ -109,7 +109,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		SIGT A 1
 		"####" "#" 1
 		{
-			A_OverlayOffset(2,CAllACS("GetOffset",0)*(-1),CAllACS("GetOffset",1)*(-1));
+			A_OverlayOffset(2,CAllACS("GetOffset",2)*(-1),CAllACS("GetOffset",3)*(-1));
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
 				return state("FSight");
@@ -125,7 +125,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		SIGT B 1
 		"####" "#" 1
 		{
-			A_OverlayOffset(3,CAllACS("GetOffset",0)*2,CAllACS("GetOffset",1));
+			A_OverlayOffset(3,CAllACS("GetOffset",2)*(-1.5),CAllACS("GetOffset",3)*(-1.5));
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
 				return state("RSight");
