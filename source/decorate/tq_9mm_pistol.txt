@@ -34,20 +34,29 @@ Actor TQ_9mm_Bullet : TQ_GenericBullet
 	}
 }
 
-ACTOR TQ_9mm_Pistol : TQ_GenericWeapon
+ACTOR TQ_9mm_Pistol : Weapon
 {
+	Weapon.KickBack 100
+	Weapon.BobRangeX 0.65
+	Weapon.BobRangeY 0.5
+	Weapon.BobSpeed 2.5
+	Weapon.BobStyle InverseSmooth
 	Weapon.AmmoUse 1
 	Weapon.AmmoGive 8
 	Weapon.AmmoType "TQ_9mm_Round"
 	Weapon.SlotNumber 2
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NO_AUTO_SWITCH
 	States
 	{
 	Spawn:
 		PIST A -1
 		Stop
+	
 	Ready:
 		PISG A 1 A_WeaponReady
 		Loop
+	
 	Deselect:
 		PISG A 1
 		{
@@ -56,6 +65,7 @@ ACTOR TQ_9mm_Pistol : TQ_GenericWeapon
 			A_SetCrosshair(0);
 		}
 		Loop
+	
 	Select:
 		PISG A 1
 		{
@@ -64,6 +74,7 @@ ACTOR TQ_9mm_Pistol : TQ_GenericWeapon
 			A_SetCrosshair(98);
 		}
 		Loop
+		
 	Fire:
 		PISG A 1
 		{ 
@@ -73,5 +84,61 @@ ACTOR TQ_9mm_Pistol : TQ_GenericWeapon
 		PISG B 2 
 		PISG C 2
 		Goto Ready
+	
+	AltFire:
+		"####" "#" 5
+		{
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				A_TakeInventory("TQ_AimDownSights");
+				A_SetCrosshair(98);
+			}
+			else
+			{
+				A_GiveInventory("TQ_AimDownSights");
+				A_Overlay(2,"FSight");
+				A_Overlay(3,"RSight");
+				A_OverlayFlags(2,PSPF_ADDBOB,0);
+				A_OverlayFlags(3,PSPF_ADDBOB,0);
+				A_SetCrosshair(99);
+			}
+		}
+		"####" "#" 0 { return state("Ready"); }
+	
+	FSight:
+		SIGT A 1
+		"####" "#" 1
+		{
+			A_OverlayOffset(2,CAllACS("GetOffset",0)*(-1),CAllACS("GetOffset",1)*(-1));
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				return state("FSight");
+			}
+			else
+			{
+				return state("StopSights");
+			}
+		}
+		Stop
+	
+	RSight:
+		SIGT B 1
+		"####" "#" 1
+		{
+			A_OverlayOffset(3,CAllACS("GetOffset",0)*2,CAllACS("GetOffset",1));
+			if(CountInv("TQ_AimDownSights") > 0)
+			{
+				return state("RSight");
+			}
+			else
+			{
+				return state("StopSights");
+			}
+		}
+		Stop
+	
+	StopSights:
+		TNT1 A 1
+		Stop
 	}
 }
