@@ -45,7 +45,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 	Weapon.AmmoGive 8
 	Weapon.AmmoType "TQ_9mm_Round"
 	Weapon.SlotNumber 2
-	+WEAPON.NOAUTOFIRE
+	//+WEAPON.NOAUTOFIRE
 	+WEAPON.NO_AUTO_SWITCH
 	States
 	{
@@ -78,11 +78,12 @@ ACTOR TQ_9mm_Pistol : Weapon
 	Fire:
 		PISG A 1
 		{ 
-			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(-1.5),1,0,0,0,CAllACS("GetOffset",3)*(-1.5));
+			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(1.0),1,0,0,0,CAllACS("GetOffset",3)*(1.0));
+			CAllACS("TQ_RecoilOffset",1);
 			//A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,5,"BulletPuff",FBF_EXPLICITANGLE);
 		}
-		PISG B 2 
-		PISG C 2
+		PISG B 1 
+		PISG C 1
 		Goto Ready
 	
 	AltFire:
@@ -109,7 +110,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		SIGT A 1
 		"####" "#" 1
 		{
-			A_OverlayOffset(2,CAllACS("GetOffset",2)*(-1),CAllACS("GetOffset",3)*(-1));
+			A_OverlayOffset(2,CAllACS("GetOffset",2)*(-1.0),CAllACS("GetOffset",3)*(-1.0));
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
 				return state("FSight");

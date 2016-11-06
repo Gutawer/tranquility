@@ -8,7 +8,7 @@
 //------------------------------------------------------------
 
 
-//Begin implementing eye, head, weapon, offsets
+//Track mouse movement for offsets
 script "TQ_Tracking" enter
 {
 	int EyeYaw, EyePitch;
@@ -29,9 +29,9 @@ script "TQ_Tracking" enter
 		OffsetWeaponPitch=GetUserVariable(0,"user_offsetweaponpitch")-EyePitch;
 		
 		//Print yaw angles only for debugging
-		print(f:EyeYaw,s:"\n",
-			f:OffsetHeadYaw,s:"\n",
-			f:OffsetWeaponYaw,s:"\n");
+		//print(f:EyeYaw,s:"\n",
+		//	f:OffsetHeadYaw,s:"\n",
+		//	f:OffsetWeaponYaw,s:"\n");
 		
 		SetUserVariable(0,"user_offsetheadyaw",OffsetHeadYaw);
 		SetUserVariable(0,"user_offsetheadpitch",OffsetHeadPitch);
