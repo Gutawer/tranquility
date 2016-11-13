@@ -55,22 +55,28 @@ script "TQ_OffsetReturn" enter
 	while (1)
 	{
 		//Return weapon offsets by velocity to give "spring" effect
+		//Get current user variable yaw/pitch offsets
 		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
 		OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
 		
+		//add a factor of the offset to the return velocity
 		OffsetWeaponYawVel = OffsetWeaponYawVel+(fixedmul(OffsetWeaponYaw,VelFactor));
 		OffsetWeaponPitchVel = OffsetWeaponPitchVel+(fixedmul(OffsetWeaponPitch,VelFactor));
 		
+		//reduce the total offset by the velocity
 		OffsetWeaponYaw=OffsetWeaponYaw-OffsetWeaponYawVel;
 		OffsetWeaponPitch=OffsetWeaponPitch-OffsetWeaponPitchVel;
 		
+		//decay the velocity by a factor
 		OffsetWeaponYawVel=(fixedmul(OffsetWeaponYawVel,VelDecay));
 		OffsetWeaponPitchVel=(fixedmul(OffsetWeaponPitchVel,VelDecay));
 		
+		//push the new offset to the user variables
 		SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
 		SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
 		
 		//Return head offsets smoothly, no spring
+		//simply reduce the offset by a factor and push to user variables
 		OffsetHeadYaw=fixedmul(GetUserVariable(0,"user_offsetheadyaw"),0.5);
 		OffsetHeadPitch=fixedmul(GetUserVariable(0,"user_offsetheadpitch"),0.5);
 		
