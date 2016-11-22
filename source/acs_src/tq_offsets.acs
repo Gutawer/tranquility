@@ -10,13 +10,13 @@
 script "GetOffset" (int AngleType)
 {
 	if (AngleType == 0) {
-		SetResultValue(GetUserVariable(0,"user_offsetheadyaw")/360);
+		SetResultValue(GetUserVariable(0,"user_offsetheadyaw")/180);
 	}
 	if (AngleType == 1) {
 		SetResultValue(GetUserVariable(0,"user_offsetheadpitch")/180);
 	}
 	if (AngleType == 2) {
-		SetResultValue(GetUserVariable(0,"user_offsetweaponyaw")/360);
+		SetResultValue(GetUserVariable(0,"user_offsetweaponyaw")/180);
 	}
 	if (AngleType == 3) {
 		SetResultValue(GetUserVariable(0,"user_offsetweaponpitch")/180);
@@ -27,8 +27,8 @@ script "TQ_RecoilOffset" (int recoiloffset)
 {
 	int RecoilTwist=random(0,0.5)*recoiloffset/4*(-1);
 	int RecoilClimb=random(0.75,1.25)*recoiloffset/4;
-	ChangeActorAngle(0,GetActorAngle(0)+(RecoilTwist/360),true);
-	ChangeActorPitch(0,GetActorPitch(0)-(RecoilClimb/180),true);
+	//ChangeActorAngle(0,GetActorAngle(0)+(RecoilTwist/360),true);
+	//ChangeActorPitch(0,GetActorPitch(0)-(RecoilClimb/180),true);
 	
 	//int OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
 	//int OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");

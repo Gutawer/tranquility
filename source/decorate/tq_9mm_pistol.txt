@@ -55,7 +55,11 @@ ACTOR TQ_9mm_Pistol : Weapon
 		Stop
 	
 	Ready:
-		PISG A 1 A_WeaponReady
+		PISG A 1
+		{
+			A_WeaponReady;
+			A_WeaponOffset(CAllACS("GetOffset",2)*(-0.25),CAllACS("GetOffset",3)*(-0.2),WOF_ADD|WOF_ADD);
+		}
 		Loop
 	
 	Deselect:
@@ -80,7 +84,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		PISG A 1
 		{
 			A_PlaySound("weapons/pistol", CHAN_WEAPON);
-			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(-1),1,0,0,0,CAllACS("GetOffset",3)*(-1));
+			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(1),1,0,0,0,CAllACS("GetOffset",3)*(1));
 		}
 		PISG B 2 { CAllACS("TQ_RecoilOffset",RecoilStrength); }
 		PISG CDDD 1 A_WeaponReady
@@ -131,7 +135,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		SIGT B 1
 		"####" "#" 1
 		{
-			A_OverlayOffset(3,CAllACS("GetOffset",2)*(-2),CAllACS("GetOffset",3)*(-2));
+			A_OverlayOffset(3,CAllACS("GetOffset",2)*(-0.5),CAllACS("GetOffset",3)*(-0.5));
 			if(CountInv("TQ_AimDownSights") > 0)
 			{
 				return state("RSight");
