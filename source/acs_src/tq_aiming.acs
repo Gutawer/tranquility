@@ -43,6 +43,37 @@ script "TQ_Tracking" enter
 	}
 }
 
+
+//Idle sway
+script "TQ_OffsetIdleSway" enter
+{
+	int OffsetWeaponYaw, OffsetWeaponPitch;
+	int v, vector;
+	
+	while(1)
+	{
+		for (vector = 0; vector<360;vector++)
+		{
+		v=fixeddiv(vector,360);
+		
+		print(f:v);
+		//Get current user variable yaw/pitch offsets
+		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
+		OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
+		
+		OffsetWeaponYaw = OffsetWeaponYaw + (sin(v)/180);
+		//OffsetWeaponPitch = OffsetWeaponPitch + (sin(v)*sin(v)/1800);
+			
+		//push the new offset to the user variables
+		SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
+		SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
+
+		delay(1);
+		}
+	}
+}
+
+
 //Return offsets to zero 
 script "TQ_OffsetReturn" enter
 {
@@ -50,7 +81,7 @@ script "TQ_OffsetReturn" enter
 	int OffsetWeaponYawVel, OffsetWeaponPitchVel;
 	int OffsetHeadYaw, OffsetHeadPitch;
 	int VelFactor = 0.025;
-	int VelDecay = 0.85;
+	int VelDecay = 0.8;
 	
 	while (1)
 	{
