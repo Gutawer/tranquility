@@ -45,7 +45,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 	Weapon.AmmoGive 8
 	Weapon.AmmoType "TQ_9mm_Round"
 	Weapon.SlotNumber 2
-	//+WEAPON.NOAUTOFIRE
+	+WEAPON.NOAUTOFIRE
 	+WEAPON.NO_AUTO_SWITCH
 	States
 	{
@@ -77,13 +77,13 @@ ACTOR TQ_9mm_Pistol : Weapon
 		
 	Fire:
 		PISG A 1
-		{ 
+		{
+			A_PlaySound("weapons/pistol", CHAN_WEAPON);
 			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(1.0),1,0,0,0,CAllACS("GetOffset",3)*(1.0));
 			CAllACS("TQ_RecoilOffset",1);
 			//A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,5,"BulletPuff",FBF_EXPLICITANGLE);
 		}
-		PISG B 1 
-		PISG C 1
+		PISG BC 2 //A_Refire
 		Goto Ready
 	
 	AltFire:
