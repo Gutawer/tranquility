@@ -36,7 +36,7 @@ Actor TQ_9mm_Bullet : TQ_GenericBullet
 
 ACTOR TQ_9mm_Pistol : Weapon
 {
-	const int RecoilStrength = 2;
+	const int RecoilStrength = 4;
 	Weapon.KickBack 100
 	Weapon.BobRangeX 0.65
 	Weapon.BobRangeY 0.5
@@ -81,20 +81,13 @@ ACTOR TQ_9mm_Pistol : Weapon
 		{
 			A_PlaySound("weapons/pistol", CHAN_WEAPON);
 			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(-1),1,0,0,0,CAllACS("GetOffset",3)*(-1));
-			CAllACS("TQ_RecoilOffset",RecoilStrength);
-			//A_FireBullets(CAllACS("GetOffset",0)/(180),CAllACS("GetOffset",1)/(-90),-1,5,"BulletPuff",FBF_EXPLICITANGLE);
 		}
-		PISG BCD 1 A_WeaponReady
-		PISG D 1 A_Refire
-		PISG CA 2 A_WeaponReady
-		Goto Ready
-		
-	Hold:
-		PISG DC 2
-		PISG A 2
+		PISG B 2 { CAllACS("TQ_RecoilOffset",RecoilStrength); }
+		PISG CDDD 1 A_WeaponReady
+		PISG CCCA 1 
 		{
-			CAllACS("TQ_RecoilOffset",RecoilStrength*(-1));
-			A_ClearReFire;
+			A_WeaponReady;
+			CAllACS("TQ_RecoilOffset",RecoilStrength/4*(-1));
 		}
 		Goto Ready
 	
