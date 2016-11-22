@@ -25,6 +25,8 @@ script "GetOffset" (int AngleType)
 
 script "TQ_RecoilOffset" (int recoiloffset)
 {
+	int RecoilTwist=random(0,0.5)*recoiloffset/4*(-1);
+	int RecoilClimb=random(0.75,1.25)*recoiloffset/4;
 	int OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
 	int OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
 	
