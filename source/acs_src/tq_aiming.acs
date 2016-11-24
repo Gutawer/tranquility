@@ -1,6 +1,12 @@
 #library "TQ_Aiming"
 #include "zcommon.acs"
 
+function int FixedAbs (int value)
+{
+	if (value >= 0.0) return value;
+	return FixedMul(value, -1.0);
+}
+
 //------------------------------------------------------------
 //
 // Manage aim offsets
