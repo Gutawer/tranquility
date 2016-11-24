@@ -55,20 +55,30 @@ script "TQ_OffsetIdleSway" enter
 {
 	int OffsetWeaponYaw, OffsetWeaponPitch;
 	int v, vector;
+	int MovementFactor;
+	int SwayPeriod;
 	
 	while(1)
 	{
 		for (vector = 0; vector<360;vector++)
 		{
-		v=fixeddiv(vector,360);
+		MovementFactor=(FixedAbs(GetActorVelX(0))+FixedAbs(GetActorVelY(0))+FixedAbs(GetActorVelZ(0)));
+		MovementFactor=(MovementFactor/2)+0.1; //reduce to desired range, add minimum movement
+		MovementFactor=MovementFactor+fixeddiv(GetCVar("cl_run"),10); //Add minimum if in "runmode"
 		
-		print(f:v);
+		SwayPeriod=MovementFactor*6;
+		v=fixeddiv(vector,360);
+		v=fixedmul(v,SwayPeriod);
+		
+		print(f:GetActorProperty(0,APROP_Height),s:"\n",
+			i:GetCVar("cl_run"),s:"\n",
+			f:MovementFactor);
 		//Get current user variable yaw/pitch offsets
 		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
 		OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
 		
-		OffsetWeaponYaw = OffsetWeaponYaw + (sin(v)/180);
-		//OffsetWeaponPitch = OffsetWeaponPitch + (sin(v)*sin(v)/1800);
+		OffsetWeaponYaw = OffsetWeaponYaw + fixedmul(MovementFactor,(cos(v)/180));
+		OffsetWeaponPitch = OffsetWeaponPitch + fixedmul(MovementFactor,(sin(v*2)/180));
 			
 		//push the new offset to the user variables
 		SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
