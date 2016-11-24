@@ -1,4 +1,0 @@
-GameInfo
-{
-	PlayerClasses = "TQ_Player"
-}
