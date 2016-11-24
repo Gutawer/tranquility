@@ -70,9 +70,10 @@ script "TQ_OffsetIdleSway" enter
 		v=fixeddiv(vector,360);
 		v=fixedmul(v,SwayPeriod);
 		
-		print(f:GetActorProperty(0,APROP_Height),s:"\n",
-			i:GetCVar("cl_run"),s:"\n",
-			f:MovementFactor);
+		//print(f:GetActorProperty(0,APROP_Height),s:"\n",
+		//	i:GetCVar("cl_run"),s:"\n",
+		//	f:MovementFactor);
+		
 		//Get current user variable yaw/pitch offsets
 		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
 		OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
