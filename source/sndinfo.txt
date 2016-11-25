@@ -1,0 +1,4 @@
+ShotgunFire		sounds/DSSHOTGN.wav
+ShotgunCock		dswpnup
+
+misc/w_pkup		dssgcock		// Pickup weapon

@@ -1,0 +1,13 @@
+Actor TQ_00Buck_Pellet : TQ_GenericBullet
+{
+	Speed 550
+	Damage (random(160,220)*random(1,3)/50) // 00 Buckshot, ~192 ft.lbf +/-15%
+	States
+	{
+	Death:
+		TNT1 A 0
+		PUFF AB random(1,2)
+		TNT1 AA 0 A_SpawnItemEx("TQ_BulletPuff",0,0,0,frandom(-2,2),frandom(-2,2),frandom(-2,2))
+		Stop
+	}
+}
