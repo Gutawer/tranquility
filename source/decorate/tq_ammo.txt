@@ -1,0 +1,16 @@
+Actor TQ_9mm_Round : Ammo
+{
+	Inventory.PickupMessage "Picked up a round of 9mm"
+	Inventory.Amount 1
+	Inventory.MaxAmount 200
+	Ammo.BackpackAmount 40
+	Ammo.BackpackMaxAmount 400
+	Inventory.Icon "CLIPA0"
+	XScale 0.5
+	States
+	{
+	Spawn:
+		CLIP A -1
+		Stop
+	}
+}

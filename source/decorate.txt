@@ -5,7 +5,10 @@
 //------------------------------------------------------------
 #include "decorate/nashmove.txt"
 #include "decorate/tq_generic.txt"
+#include "decorate/tq_ammo.txt"
+#include "decorate/tq_bullets.txt"
 #include "decorate/tq_9mm_pistol.txt"
+#include "decorate/tq_enemies.txt"
 
 //------------------------------------------------------------
 //
