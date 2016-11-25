@@ -53,6 +53,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 	Fire:
 		PISG A 1
 		{
+			A_GunFlash;
 			A_PlaySound("weapons/pistol", CHAN_WEAPON);
 			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(1),1,0,0,0,CAllACS("GetOffset",3)*(1));
 		}
@@ -69,6 +70,10 @@ ACTOR TQ_9mm_Pistol : Weapon
 			return state("");
 		}
 		Goto Ready
+		
+	Flash:
+		PISG F random(0,1)
+		Stop
 	
 	AltFire:
 		"####" "#" 5
