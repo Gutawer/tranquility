@@ -15,7 +15,7 @@
 Actor TQ_Player : Doomplayer
 {
 	Player.StartItem "TQ_9mm_Pistol"
-	Player.StartItem "TQ_9mm_Round", 50
+	Player.StartItem "TQ_9mm_Round", 200
 	Player.Viewheight 50
 	Player.AttackZOffset 26
 	Player.ForwardMove 1.0
