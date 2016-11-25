@@ -36,7 +36,7 @@ Actor TQ_9mm_Bullet : TQ_GenericBullet
 
 ACTOR TQ_9mm_Pistol : Weapon
 {
-	const int RecoilStrength = 4;
+	const int RecoilStrength = 6;
 	Weapon.KickBack 100
 	Weapon.BobRangeX 0.65
 	Weapon.BobRangeY 0.5
