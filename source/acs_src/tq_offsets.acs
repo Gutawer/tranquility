@@ -22,30 +22,3 @@ script "GetOffset" (int AngleType)
 		SetResultValue(GetUserVariable(0,"user_offsetweaponpitch")/180);
 	}
 }
-
-script "TQ_RecoilOffset" (int recoiloffset)
-{
-	int RecoilTwist=random(0.4,0.5)*recoiloffset/4*(-1);
-	int RecoilClimb=random(0.9,1.1)*recoiloffset/4;
-	
-	if (GetActorProperty(0,APROP_Height)<56.0)
-	{
-		RecoilTwist=RecoilTwist/2;
-		RecoilClimb=RecoilClimb/2;
-	}
-	
-	ChangeActorAngle(0,GetActorAngle(0)+(RecoilTwist/360),true);
-	ChangeActorPitch(0,GetActorPitch(0)-(RecoilClimb/180),true);
-	
-	int OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
-	int OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
-	
-	OffsetWeaponYaw=OffsetWeaponYaw+(RecoilTwist/180);
-	OffsetWeaponPitch=OffsetWeaponPitch+(RecoilClimb/180);
-	
-	//Print(f:RecoilTwist,s:"\n",
-	//	f:RecoilClimb);
-	
-	SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
-	SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
-}
