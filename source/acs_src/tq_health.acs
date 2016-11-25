@@ -1,0 +1,28 @@
+#library "TQ_Health"
+#include "zcommon.acs"
+
+//------------------------------------------------------------
+//
+// Manage health-related stuffs
+//
+//------------------------------------------------------------
+
+script "TQ_Health" enter
+{
+	int CurrentHealth;
+	int AdjustedSpeed;
+	
+	while(1)
+	{
+		CurrentHealth=GetActorProperty(0,APROP_Health);
+		AdjustedSpeed=fixeddiv(currenthealth,50);
+		If(AdjustedSpeed>1.0) { AdjustedSpeed=1.0; }
+		if(AdjustedSpeed<0.25) { AdjustedSpeed=0.5; }
+		
+		SetActorProperty(0,APROP_Speed,AdjustedSpeed);
+		
+		print(f:GetActorProperty(0,APROP_Speed));
+		
+		delay(1);		
+	}
+}
