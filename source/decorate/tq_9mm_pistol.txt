@@ -81,7 +81,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		Loop
 		
 	Fire:
-		PISG A 0
+		PISG A 1
 		{
 			A_PlaySound("weapons/pistol", CHAN_WEAPON);
 			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(1),1,0,0,0,CAllACS("GetOffset",3)*(1));
