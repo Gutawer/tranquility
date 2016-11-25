@@ -25,3 +25,14 @@ Actor TQ_Player : Doomplayer
 	var float user_offsetweaponyaw;
 	var float user_offsetweaponpitch;
 }
+
+//------------------------------------------------------------
+//
+// Compatibility fixes
+//
+//------------------------------------------------------------
+ACTOR TQ_Column : Column Replaces Column
+{
+	Radius 7
+	ProjectilePassHeight 8
+}
