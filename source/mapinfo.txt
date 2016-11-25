@@ -2,3 +2,31 @@ GameInfo
 {
 	PlayerClasses = "TQ_Player"
 }
+
+ClearSkills
+
+skill Easy
+{
+	Slowmonsters
+	AmmoFactor = 1.5
+	DropAmmoFactor = 1.5
+	DamageFactor = 0.5
+	EasyBossBrain
+	SpawnFilter = Easy
+	Name = "Easy"
+}
+
+skill normal
+{
+	SpawnFilter = Hard
+	Name = "Normal (UV)"
+	DefaultSkill
+}
+
+skill hard
+{
+	FastMonsters
+	SpawnFilter = Nightmare
+	Name = "Realism"
+	MustConfirm
+}
