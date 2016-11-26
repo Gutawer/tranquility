@@ -67,9 +67,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		{
 			A_WeaponReady;
 			If(!(GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
-			{
-				return state("Ready");
-			}
+			{ return state("Ready"); }
 			CAllACS("TQ_RecoilOffset",(RecoilStrength/4)*(-1));
 			return state("");
 		}
