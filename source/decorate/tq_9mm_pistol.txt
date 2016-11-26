@@ -6,7 +6,7 @@
 
 ACTOR TQ_9mm_Pistol : Weapon
 {
-	const int RecoilStrength = 6;
+	const int RecoilStrength = 4;
 	Weapon.KickBack 100
 	Weapon.BobRangeX 0.65
 	Weapon.BobRangeY 0.5
@@ -70,7 +70,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 			{
 				return state("Ready");
 			}
-			CAllACS("TQ_RecoilOffset",RecoilStrength/4*(-1));
+			CAllACS("TQ_RecoilOffset",(RecoilStrength/4)*(-1));
 			return state("");
 		}
 		Goto Ready
