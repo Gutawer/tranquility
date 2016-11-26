@@ -36,8 +36,9 @@ ACTOR TQ_9mm_Pistol : Weapon
 		PISG A 1
 		{
 			A_Lower;
-			A_TakeInventory("TQ_AimDownSights");
 			A_SetCrosshair(0);
+			A_Overlay(2,"");
+			A_Overlay(3,"");
 		}
 		Loop
 	
@@ -45,8 +46,11 @@ ACTOR TQ_9mm_Pistol : Weapon
 		PISG A 1
 		{
 			A_Raise;
-			A_TakeInventory("TQ_AimDownSights");
-			A_SetCrosshair(98);
+			A_SetCrosshair(99);
+			A_Overlay(2,"FSight");
+			A_Overlay(3,"RSight");
+			A_OverlayFlags(2,PSPF_ADDBOB,0);
+			A_OverlayFlags(3,PSPF_ADDBOB,0);
 		}
 		Loop
 		
@@ -75,60 +79,32 @@ ACTOR TQ_9mm_Pistol : Weapon
 		PISG F random(0,1)
 		Stop
 	
-	AltFire:
-		"####" "#" 5
-		{
-			if(CountInv("TQ_AimDownSights") > 0)
-			{
-				A_TakeInventory("TQ_AimDownSights");
-				A_SetCrosshair(98);
-			}
-			else
-			{
-				A_GiveInventory("TQ_AimDownSights");
-				A_Overlay(2,"FSight");
-				A_Overlay(3,"RSight");
-				A_OverlayFlags(2,PSPF_ADDBOB,0);
-				A_OverlayFlags(3,PSPF_ADDBOB,0);
-				A_SetCrosshair(99);
-			}
-			return state("Ready");
-		}
-	
 	FSight:
-		SIGT A 1
-		"####" "#" 1
+		TNT1 A 0
 		{
 			A_OverlayOffset(2,CAllACS("GetOffset",2)*(-1),CAllACS("GetOffset",3)*(-1));
-			if(CountInv("TQ_AimDownSights") > 0)
-			{
-				return state("FSight");
-			}
-			else
-			{
-				return state("StopSights");
-			}
+			if ((CAllACS("GetOffset",2) > 15 || CAllACS("GetOffset",2) < -15 || CAllACS("GetOffset",3) > 15 || CAllACS("GetOffset",3) < -15))
+			{ return state("HideFSight"); }
+			Return state("");
 		}
-		Stop
+		SIGT A 1
+		loop
+	HideFSight:
+		TNT1 A 1
+		Goto FSight
 	
 	RSight:
-		SIGT B 1
-		"####" "#" 1
+		TNT1 A 0
 		{
 			A_OverlayOffset(3,CAllACS("GetOffset",2)*(-0.5),CAllACS("GetOffset",3)*(-0.5));
-			if(CountInv("TQ_AimDownSights") > 0)
-			{
-				return state("RSight");
-			}
-			else
-			{
-				return state("StopSights");
-			}
+			if ((CAllACS("GetOffset",2) > 15 || CAllACS("GetOffset",2) < -15 || CAllACS("GetOffset",3) > 15 || CAllACS("GetOffset",3) < -15))
+			{ return state("HideRSight"); }
+			Return state("");
 		}
-		Stop
-	
-	StopSights:
+		SIGT B 1
+		loop
+	HideRSight:
 		TNT1 A 1
-		Stop
+		Goto RSight
 	}
 }
