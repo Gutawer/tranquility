@@ -63,12 +63,12 @@ script "TQ_OffsetIdleSway" enter
 		for (vector = 0; vector<360;vector++)
 		{
 		MovementFactor=(FixedAbs(GetActorVelX(0))+FixedAbs(GetActorVelY(0))+FixedAbs(GetActorVelZ(0)));
-		MovementFactor=(MovementFactor/2)+0.05; //reduce to desired range, add minimum movement
+		MovementFactor=(MovementFactor/4)+0.05; //reduce to desired range, add minimum movement
 		If((GetCVar("cl_run")==1 && !(GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)) ||
 			(GetCVar("cl_run")==0 && (GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)))
 			{ MovementFactor=MovementFactor+0.1; }//Add minimum if in "runmode"
 		
-		SwayPeriod=MovementFactor*6;
+		SwayPeriod=MovementFactor*12;
 		v=fixeddiv(vector,360);
 		v=fixedmul(v,SwayPeriod);
 		
