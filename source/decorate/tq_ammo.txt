@@ -5,12 +5,23 @@ Actor TQ_9mm_Round : Ammo
 	Inventory.MaxAmount 200
 	Ammo.BackpackAmount 40
 	Ammo.BackpackMaxAmount 400
-	Inventory.Icon "CLIPA0"
-	XScale 0.5
+	Inventory.Icon "CLIPB0"
 	States
 	{
 	Spawn:
-		CLIP A -1
+		9MMR A -1
+		Stop
+	}
+}
+
+Actor TQ_9mm_Mag : TQ_9mm_Round
+{
+	Inventory.PickupMessage "Picked up a magazine of 9mm"
+	Inventory.Amount 15
+	States
+	{
+	Spawn:
+		CLIP B -1
 		Stop
 	}
 }
