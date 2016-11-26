@@ -21,7 +21,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 	States
 	{
 	Spawn:
-		PIST A -1
+		PISG P -1
 		Stop
 	
 	Ready:
