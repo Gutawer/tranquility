@@ -31,8 +31,8 @@ script "TQ_Tracking" enter
 		OffsetHeadYaw=GetUserVariable(0,"user_offsetheadyaw")-EyeYaw;
 		OffsetHeadPitch=GetUserVariable(0,"user_offsetheadpitch")-EyePitch;
 		
-		OffsetWeaponYaw=GetUserVariable(0,"user_offsetweaponyaw")-EyeYaw;
-		OffsetWeaponPitch=GetUserVariable(0,"user_offsetweaponpitch")-EyePitch;
+		OffsetWeaponYaw=GetUserVariable(0,"user_offsetweaponyaw")+EyeYaw;
+		OffsetWeaponPitch=GetUserVariable(0,"user_offsetweaponpitch")+EyePitch;
 		
 		//Print yaw angles only for debugging
 		//print(f:EyeYaw,s:"\n",
