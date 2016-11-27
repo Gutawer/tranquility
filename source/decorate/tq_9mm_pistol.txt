@@ -59,7 +59,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		{
 			A_GunFlash;
 			A_PlaySound("weapons/pistol", CHAN_WEAPON);
-			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(1),1,0,0,0,CAllACS("GetOffset",3)*(1));
+			A_FireCustomMissile("TQ_9mm_Bullet",CAllACS("GetOffset",2)*(0.75),1,0,0,0,CAllACS("GetOffset",3)*(0.75));
 		}
 		PISG B 2 { CAllACS("TQ_RecoilOffset",RecoilStrength); }
 		PISG CD 1 A_WeaponReady
@@ -80,7 +80,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 	FSight:
 		TNT1 A 0
 		{
-			A_OverlayOffset(2,CAllACS("GetOffset",2)*(-1),CAllACS("GetOffset",3)*(-1));
+			A_OverlayOffset(2,CAllACS("GetOffset",2)*(-0.75),CAllACS("GetOffset",3)*(-0.75));
 			if ((CAllACS("GetOffset",0) > 5 || CAllACS("GetOffset",0) < -5 || CAllACS("GetOffset",1) > 5 || CAllACS("GetOffset",1) < -5))
 			{ return state("HideFSight"); }
 			Return state("");
@@ -94,7 +94,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 	RSight:
 		TNT1 A 0
 		{
-			A_OverlayOffset(3,CAllACS("GetOffset",2)*(-0.5),CAllACS("GetOffset",3)*(-0.5));
+			A_OverlayOffset(3,CAllACS("GetOffset",2)*(-0.45),CAllACS("GetOffset",3)*(-0.45));
 			if ((CAllACS("GetOffset",0) > 5 || CAllACS("GetOffset",0) < -5 || CAllACS("GetOffset",1) > 5 || CAllACS("GetOffset",1) < -5))
 			{ return state("HideRSight"); }
 			Return state("");
