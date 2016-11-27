@@ -101,14 +101,14 @@ script "TQ_RecoilOffset" (int recoiloffset)
 		RecoilClimb=RecoilClimb/2;
 	}
 	
-	ChangeActorAngle(0,GetActorAngle(0)+(RecoilTwist/360),true);
-	ChangeActorPitch(0,GetActorPitch(0)-(RecoilClimb/180),true);
+	ChangeActorAngle(0,GetActorAngle(0)+(RecoilTwist/360)/2,true);
+	ChangeActorPitch(0,GetActorPitch(0)-(RecoilClimb/180)/2,true);
 	
 	int OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
 	int OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
 	
 	OffsetWeaponYaw=OffsetWeaponYaw+(RecoilTwist/180);
-	OffsetWeaponPitch=OffsetWeaponPitch+(RecoilClimb/180);
+	OffsetWeaponPitch=OffsetWeaponPitch+(RecoilClimb/90);
 	
 	//Print(f:RecoilTwist,s:"\n",
 	//	f:RecoilClimb);

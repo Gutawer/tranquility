@@ -6,7 +6,7 @@
 
 ACTOR TQ_9mm_Pistol : Weapon
 {
-	const int RecoilStrength = 4;
+	const int RecoilStrength = 8;
 	Weapon.KickBack 100
 	Weapon.BobRangeX 0.65
 	Weapon.BobRangeY 0.5
