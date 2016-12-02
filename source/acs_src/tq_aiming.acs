@@ -7,6 +7,20 @@ function int FixedAbs (int value)
 	return FixedMul(value, -1.0);
 }
 
+function int RunMode (void)
+{
+	//print(s:"");
+	int value=false;
+	If((GetCVar("cl_run")==1 && !(GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)) ||
+		(GetCVar("cl_run")==0 && (GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)))
+	{
+		//print(s:"Running!");
+		value=true;
+	}
+	return value;
+}
+	
+
 //------------------------------------------------------------
 //
 // Manage aim offsets
