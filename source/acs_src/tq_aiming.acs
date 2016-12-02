@@ -68,6 +68,52 @@ script "TQ_Tracking" enter
 script "TQ_OffsetIdleSway" enter
 {
 	int OffsetWeaponYaw, OffsetWeaponPitch;
+	int BaseFactor, JitterFactor;
+	int OffsetDriftYawVel, OffsetDriftPitchVel, OffsetDriftVector;
+	
+	while(1)
+	{
+		BaseFactor=1.25-fixeddiv(GetActorProperty(0,APROP_Health),100);
+		BaseFactor=fixedmul(BaseFactor,BaseFactor);
+		If(RunMode()==true) { BaseFactor=BaseFactor+0.1; }//Add minimum if in "runmode"
+				if (GetActorProperty(0,APROP_Height)<56.0) { BaseFactor=BaseFactor/2; }
+		
+		//If (BaseFactor>0.25) { BaseFactor=0.25; }
+		
+		JitterFactor=((BaseFactor*50)+15.0)>>16;
+		
+		print(f:BaseFactor,s:"\n",
+			i:JitterFactor);		
+	
+		//Get current user variable yaw/pitch offsets
+		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
+		OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
+		
+		if (random(0,100)<JitterFactor)
+		{
+			OffsetDriftVector=OffsetDriftVector+random(-0.5,0.5);
+			OffsetDriftYawVel=OffsetDriftYawVel+fixedmul(BaseFactor,cos(OffsetDriftVector));
+			OffsetDriftPitchVel=OffsetDriftPitchVel+fixedmul(BaseFactor,sin(OffsetDriftVector));
+		}
+		
+		OffsetWeaponYaw=OffsetWeaponYaw+(OffsetDriftYawVel/360);
+		OffsetWeaponPitch=OffsetWeaponPitch+(OffsetDriftPitchVel/360);
+		
+		OffsetDriftYawVel=fixedmul(OffsetDriftYawVel,0.75);
+		OffsetDriftPitchVel=fixedmul(OffsetDriftPitchVel,0.75);
+		
+		//push the new offset to the user variables
+		SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
+		SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
+		
+		delay(1);
+	}
+}
+
+//Move sway
+script "TQ_OffsetMoveSway" enter
+{
+	int OffsetWeaponYaw, OffsetWeaponPitch;
 	int v, vector;
 	int MovementFactor;
 	int SwayPeriod;
@@ -76,28 +122,27 @@ script "TQ_OffsetIdleSway" enter
 	{
 		for (vector = 0; vector<360;vector++)
 		{
-		MovementFactor=(FixedAbs(GetActorVelX(0))+FixedAbs(GetActorVelY(0))+FixedAbs(GetActorVelZ(0)));
-		MovementFactor=(MovementFactor/4)+0.05; //reduce to desired range, add minimum movement
-		If((GetCVar("cl_run")==1 && !(GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)) ||
-			(GetCVar("cl_run")==0 && (GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)))
-			{ MovementFactor=MovementFactor+0.1; }//Add minimum if in "runmode"
-		
-		SwayPeriod=MovementFactor*12;
-		v=fixeddiv(vector,360);
-		v=fixedmul(v,SwayPeriod);
-		
-		//Get current user variable yaw/pitch offsets
-		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
-		OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
-		
-		OffsetWeaponYaw = OffsetWeaponYaw + fixedmul(MovementFactor,(cos(v)/180));
-		OffsetWeaponPitch = OffsetWeaponPitch + fixedmul(MovementFactor,(sin(v*2)/180));
+			//Get player's movement speed
+			MovementFactor=(FixedAbs(GetActorVelX(0))+FixedAbs(GetActorVelY(0))+FixedAbs(GetActorVelZ(0)));
 			
-		//push the new offset to the user variables
-		SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
-		SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
-
-		delay(1);
+			//Covert vector to fixed point and apply modifiers
+			SwayPeriod=12.0;
+			v=fixeddiv(vector,360);
+			v=fixedmul(v,SwayPeriod);
+			
+			//Get current user variable yaw/pitch offsets
+			OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
+			OffsetWeaponPitch = GetUserVariable(0,"user_offsetweaponpitch");
+			
+			//Add offsets for dynamic Lissajous curve
+			OffsetWeaponYaw = OffsetWeaponYaw + fixedmul(MovementFactor,(cos(v)/720));
+			OffsetWeaponPitch = OffsetWeaponPitch + fixedmul(MovementFactor,(sin(v*2)/720));
+				
+			//push the new offset to the user variables
+			SetUserVariable(0,"user_offsetweaponyaw",OffsetWeaponYaw);
+			SetUserVariable(0,"user_offsetweaponpitch",OffsetWeaponPitch);
+			
+			delay(1);
 		}
 	}
 }
