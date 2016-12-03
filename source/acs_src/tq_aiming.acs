@@ -82,8 +82,8 @@ script "TQ_OffsetIdleSway" enter
 		
 		JitterFactor=((BaseFactor*50)+15.0)>>16;
 		
-		print(f:BaseFactor,s:"\n",
-			i:JitterFactor);		
+		//print(f:BaseFactor,s:"\n",
+		//	i:JitterFactor);		
 	
 		//Get current user variable yaw/pitch offsets
 		OffsetWeaponYaw = GetUserVariable(0,"user_offsetweaponyaw");
