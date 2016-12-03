@@ -8,3 +8,6 @@ Code
 
 - Nash Muhandes
 	NashMove (Less Slippery Doom Movement)
+
+- SidDoyle
+	RealAim (aiming inertia and viewbob)
