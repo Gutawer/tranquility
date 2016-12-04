@@ -15,13 +15,13 @@ script "TQ_Health" enter
 	while(1)
 	{
 		CurrentHealth=GetActorProperty(0,APROP_Health);
-		AdjustedSpeed=fixeddiv(currenthealth,50);
+		AdjustedSpeed=fixeddiv(currenthealth,25);
 		If (AdjustedSpeed>1.0) { AdjustedSpeed=1.0; }
 		if (AdjustedSpeed<0.5) { AdjustedSpeed=0.5; }
 		
 		SetActorProperty(0,APROP_Speed,AdjustedSpeed);
 		
-		//print(f:GetActorProperty(0,APROP_Speed));
+		print(f:GetActorProperty(0,APROP_Speed));
 		
 		delay(1);		
 	}
