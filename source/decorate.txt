@@ -17,6 +17,7 @@
 //------------------------------------------------------------
 Actor TQ_Player : Doomplayer
 {
+	Player.StartItem "Fist"
 	Player.StartItem "TQ_9mm_Pistol"
 	Player.StartItem "TQ_9mm_Round", 200
 	Player.Viewheight 50
