@@ -2,9 +2,10 @@ Actor TQ_9mm_Round : Ammo
 {
 	Inventory.PickupMessage "Picked up a round of 9mm"
 	Inventory.Amount 1
-	Inventory.MaxAmount 100
+	Inventory.MaxAmount 200
 	Ammo.BackpackAmount 40
 	Ammo.BackpackMaxAmount 400
+	Inventory.Icon "CLIPB0"
 	States
 	{
 	Spawn:
@@ -13,11 +14,10 @@ Actor TQ_9mm_Round : Ammo
 	}
 }
 
-Actor TQ_9mm_Mag : Ammo
+Actor TQ_9mm_Mag : TQ_9mm_Round
 {
 	Inventory.PickupMessage "Picked up a magazine of 9mm"
 	Inventory.Amount 15
-	Inventory.Icon "CLIPB0"
 	States
 	{
 	Spawn:
