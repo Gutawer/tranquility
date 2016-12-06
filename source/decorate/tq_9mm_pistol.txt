@@ -97,6 +97,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		
 	Fire:
 		"####" "#" 1
+		"####" "#" 1
 		{
 			If(countinv("TQ_9mm_Pistol_RoundInChamber")==1)
 			{
@@ -113,6 +114,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		Goto ReadyLoop
 	SlideBack:	
 		PISG B 1
+		"####" "#" 1
 		{
 			CAllACS("TQ_RecoilOffset",RecoilStrength);
 			A_TakeInventory("TQ_9mm_Pistol_RoundInChamber");
