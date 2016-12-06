@@ -128,12 +128,12 @@ ACTOR TQ_9mm_Pistol : Weapon
 		PISG B 1 A_GiveInventory("TQ_9mm_Pistol_SlideLocked",1)
 		Goto ReadyLoop
 	SlideForward:
-		PISG B 1
+		PISG D 1
 		{
 			A_TakeInventory("TQ_9mm_Pistol_RoundsInMag",1);
 			A_GiveInventory("TQ_9mm_Pistol_RoundInChamber",1);
 		}
-		PISG CDC 1 A_WeaponReady(WRF_DISABLESWITCH)
+		PISG DCC 1 A_WeaponReady(WRF_DISABLESWITCH)
 		PISG AAAA 1 
 		{
 			A_WeaponReady(WRF_DISABLESWITCH);
@@ -163,18 +163,24 @@ ACTOR TQ_9mm_Pistol : Weapon
 			A_TakeInventory("TQ_9mm_Mag",1);
 			A_GiveInventory("TQ_9mm_Pistol_RoundsInMag",15);
 		}
-		"####" "#" 4 Offset(2,38)
-		"####" "#" 3 Offset(1,34)
-		"####" "#" 2 Offset(0,32)
+		"####" "#" 2 Offset(2,38)
+		"####" "#" 1 Offset(1,34)
+		"####" "#" 1 Offset(0,32)
 		{
-			if(CountInv("TQ_9mm_Pistol_SlideLocked")==1 || countinv("TQ_9mm_Pistol_RoundInChamber")==0)
+			if(CountInv("TQ_9mm_Pistol_SlideLocked")==1)
 			{
 				A_TakeInventory("TQ_9mm_Pistol_SlideLocked");
 				return state("SlideForward");
 			}
+			if(countinv("TQ_9mm_Pistol_RoundInChamber")==1)
+			{
+				return state("ReadyLoop");
+			}
 			Return state("");
 		}
-		Goto ReadyLoop
+		PISG C 3
+		PISG B 4			
+		Goto SlideForward
 		
 	Flash:
 		PISG F random(0,1)
