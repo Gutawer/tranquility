@@ -21,7 +21,7 @@ script "TQ_Health" enter
 		
 		SetActorProperty(0,APROP_Speed,AdjustedSpeed);
 		
-		print(f:GetActorProperty(0,APROP_Speed));
+		//print(f:GetActorProperty(0,APROP_Speed));
 		
 		delay(1);		
 	}
