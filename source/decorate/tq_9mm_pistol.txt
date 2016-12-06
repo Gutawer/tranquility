@@ -8,19 +8,19 @@
 // Housekeeping Items
 //------------------------------------------------------------
 
-Actor TQ_9mm_Pistol_SlideLocked : Ammo
+Actor TQ_9mm_Pistol_SlideLocked : Inventory
 {
 	Inventory.MaxAmount 1
 	+IGNORESKILL
 }
 
-Actor TQ_9mm_Pistol_RoundInChamber : Ammo
+Actor TQ_9mm_Pistol_RoundInChamber : Inventory
 {
 	Inventory.MaxAmount 1
 	+IGNORESKILL
 }
 
-Actor TQ_9mm_Pistol_RoundsInMag : Ammo
+Actor TQ_9mm_Pistol_RoundsInMag : Inventory
 {
 	Inventory.MaxAmount 15
 	+IGNORESKILL
