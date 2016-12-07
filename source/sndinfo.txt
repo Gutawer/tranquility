@@ -1,4 +1,11 @@
 ShotgunFire		sounds/DSSHOTGN.wav
 ShotgunCock		dswpnup
 
+TQ9mm_SlideFast	sounds/TQ9mmSlideFast.wav
+TQ9mm_SlideSnap sounds/TQ9mmSlideSnap.wav
+TQ9mm_SlidePull	sounds/TQ9mmSlidePull.wav
+
+TQMagDrop		sounds/TQMagDrop.wav
+TQMagIn			sounds/TQMagIn.wav
+
 misc/w_pkup		dssgcock		// Pickup weapon
