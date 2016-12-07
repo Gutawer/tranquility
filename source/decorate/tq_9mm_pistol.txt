@@ -59,7 +59,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 			A_Overlay(2,"FSight"); //Start the front sight overlay loop
 			A_Overlay(3,"RSight"); //Start the rear sight overlay loop
 			A_OverlayFlags(2,PSPF_ADDBOB,0); //Set front sight to follow weapon bobbing
-			//A_OverlayFlags(3,PSPF_ADDBOB,0); // Looks nicer without rear sight following bobbing?
+			A_OverlayFlags(3,PSPF_ADDBOB,0); //Set rear sight to follow weapon bobbing
 			If(CountInv("TQ_9mm_Pistol_SlideLocked")==1)
 			{	Return state("SelectLoop");	}
 			Return state("");
