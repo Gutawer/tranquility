@@ -90,7 +90,7 @@ script "TQ_Dashing" enter
 		
 		if(DashRegen>1)
 		{
-			print(s:"cooldown...");
+			//print(s:"cooldown...");
 			ForwardTaps=0;
 			LeftTaps=0;
 			RightTaps=0;
