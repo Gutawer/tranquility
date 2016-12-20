@@ -1,6 +1,26 @@
 #library "TQ_Health"
 #include "zcommon.acs"
 
+// check if player is on ground (from NashMove)
+function int CheckPlayerOnGround(void)
+{
+	int onground;
+	if(GetActorZ (0) == GetActorFloorZ (0) || GetActorVelZ(0) == 0 && !Spawn("Nash_FloorCheck", GetActorX(0), GetActorY(0), GetActorZ(0) - (4 << 16), 0, GetActorAngle(0)))
+	{
+		onground = 1;
+		//SetFont("smallfont");
+		//Print(s: "on ground");
+	}
+	else
+	{
+		onground = 0;
+		//SetFont("smallfont");
+		//Print(s: "in air");
+	}
+	return onground;
+}
+
+
 //------------------------------------------------------------
 //
 // Manage health-related stuffs
@@ -83,6 +103,8 @@ script "TQ_Dashing" enter
 		
 		while(Dash>0)
 		{
+			if (CheckPlayerOnGround()==0)
+			{	Dash=0; }
 			ThrustThing(DashAngle, 3, 0, 0);
 			Dash--;
 			delay(1);
