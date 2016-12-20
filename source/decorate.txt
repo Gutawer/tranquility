@@ -27,11 +27,29 @@ Actor TQ_Player : Doomplayer
 	Player.ForwardMove 1.0
 	Player.SideMove 0.8
 	Player.RunHealth 35
-	Player.JumpZ 4.0
+	Player.JumpZ 0
 	var float user_offsetheadyaw;
 	var float user_offsetheadpitch;
 	var float user_offsetweaponyaw;
 	var float user_offsetweaponpitch;
+}
+
+actor Mantler	//Copied from Hideous Destructor
+{
+	radius 2
+	height 2
+	-nointeraction
+	+noclip
+	+floorhugger
+	states
+	{
+	spawn:
+		PLAY A 0
+		PLAY A 3 //A_Recoil(-1)
+	waitloop:
+		PLAY A 1
+		loop
+	}
 }
 
 //------------------------------------------------------------
