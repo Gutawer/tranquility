@@ -3,3 +3,5 @@ realaim
 tq_aiming
 tq_offsets
 tq_health
+tq_movement
+tq_stamina
