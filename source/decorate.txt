@@ -27,7 +27,7 @@ Actor TQ_Player : Doomplayer
 	Player.ForwardMove 1.0
 	Player.SideMove 0.8
 	Player.RunHealth 35
-	Player.JumpZ 0
+	Player.JumpZ 5.0
 	var float user_offsetheadyaw;
 	var float user_offsetheadpitch;
 	var float user_offsetweaponyaw;
