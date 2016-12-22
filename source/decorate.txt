@@ -34,7 +34,7 @@ Actor TQ_Player : Doomplayer
 	var float user_offsetweaponpitch;
 }
 
-actor Mantler	//Copied from Hideous Destructor
+actor Mantler	//Copied (with some changes) from Hideous Destructor
 {
 	radius 2
 	height 2
@@ -44,10 +44,8 @@ actor Mantler	//Copied from Hideous Destructor
 	states
 	{
 	spawn:
-		PLAY A 0
-		PLAY A 3 //A_Recoil(-1)
-	waitloop:
-		PLAY A 1
+		TNT1 A 0
+		TNT1 A 1 //A_Recoil(-1)
 		loop
 	}
 }
