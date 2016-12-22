@@ -1,0 +1,63 @@
+#library "TQ_Stamina"
+#include "zcommon.acs"
+
+// check if player is on ground (from NashMove)
+function int CheckPlayerOnGround(void)
+{
+	int onground;
+	if(GetActorZ (0) == GetActorFloorZ (0) || GetActorVelZ(0) == 0 && !Spawn("Nash_FloorCheck", GetActorX(0), GetActorY(0), GetActorZ(0) - (4 << 16), 0, GetActorAngle(0)))
+	{
+		onground = 1;
+		//SetFont("smallfont");
+		//Print(s: "on ground");
+	}
+	else
+	{
+		onground = 0;
+		//SetFont("smallfont");
+		//Print(s: "in air");
+	}
+	return onground;
+}
+
+function int RunMode (void)
+{
+	//print(s:"");
+	int value=false;
+	If((GetCVar("cl_run")==1 && !(GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)) ||
+		(GetCVar("cl_run")==0 && (GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)))
+	{
+		//print(s:"Running!");
+		value=true;
+	}
+	return value;
+}
+
+function int FixedAbs (int value)
+{
+	if (value >= 0.0) return value;
+	return FixedMul(value, -1.0);
+}
+
+
+//------------------------------------------------------------
+//
+// Manage stamina-related stuffs
+//
+//------------------------------------------------------------
+
+script "TQ_Regain_Stamina" enter
+{
+	while(1)
+	{
+		if (GetActorProperty(0,APROP_Stamina)<100 &&
+			CheckPlayerOnGround() &&
+			!RunMode())
+		{
+			SetActorProperty(0,APROP_Stamina,GetActorProperty(0,APROP_Stamina)+1);
+		}
+		print(i:GetActorProperty(0,APROP_Stamina),s:"\n",
+			f:GetActorProperty(0,APROP_JumpZ));
+		delay(2); //delay(random(1,7)*5); 
+	}
+}
