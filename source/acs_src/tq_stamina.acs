@@ -1,44 +1,7 @@
 #library "TQ_Stamina"
 #include "zcommon.acs"
-
-// check if player is on ground (from NashMove)
-function int CheckPlayerOnGround(void)
-{
-	int onground;
-	if(GetActorZ (0) == GetActorFloorZ (0) || GetActorVelZ(0) == 0 && !Spawn("Nash_FloorCheck", GetActorX(0), GetActorY(0), GetActorZ(0) - (4 << 16), 0, GetActorAngle(0)))
-	{
-		onground = 1;
-		//SetFont("smallfont");
-		//Print(s: "on ground");
-	}
-	else
-	{
-		onground = 0;
-		//SetFont("smallfont");
-		//Print(s: "in air");
-	}
-	return onground;
-}
-
-function int RunMode (void)
-{
-	//print(s:"");
-	int value=false;
-	If((GetCVar("cl_run")==1 && !(GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)) ||
-		(GetCVar("cl_run")==0 && (GetPlayerInput(-1, INPUT_BUTTONS) & BT_SPEED)))
-	{
-		//print(s:"Running!");
-		value=true;
-	}
-	return value;
-}
-
-function int FixedAbs (int value)
-{
-	if (value >= 0.0) return value;
-	return FixedMul(value, -1.0);
-}
-
+#import "./nashmove.acs"
+#import "./tq_functions.acs"
 
 //------------------------------------------------------------
 //

@@ -1,5 +1,6 @@
 nashmove
 realaim
+tq_functions
 tq_aiming
 tq_offsets
 tq_health
