@@ -56,8 +56,8 @@ script "TQ_Regain_Stamina" enter
 		{
 			SetActorProperty(0,APROP_Stamina,GetActorProperty(0,APROP_Stamina)+1);
 		}
-		print(i:GetActorProperty(0,APROP_Stamina),s:"\n",
-			f:GetActorProperty(0,APROP_JumpZ));
+		//print(i:GetActorProperty(0,APROP_Stamina),s:"\n",
+		//	f:GetActorProperty(0,APROP_JumpZ));
 		delay(2); //delay(random(1,7)*5); 
 	}
 }
