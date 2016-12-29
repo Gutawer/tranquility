@@ -53,7 +53,7 @@ script "TQ_Dashing" enter
 	{
 		DashAngle=GetActorAngle(0) >> 8;
 		
-		for (int i=1; i<=15; i++)
+		for (int i=1; i<=25; i++)
 		{
 			//print(i:ForwardTaps,s:"\n",i:i);
 			if ((GetPlayerInput(-1,INPUT_BUTTONS) & BT_FORWARD) && !(GetPlayerInput(-1,INPUT_OLDBUTTONS) & BT_FORWARD))
