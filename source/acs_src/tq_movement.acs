@@ -104,6 +104,7 @@ script "TQ_Dashing" enter
 			{	Dash=0; }
 			ThrustThing(DashAngle, 3, 0, 0);
 			Dash--;
+			SetActorProperty(0,APROP_Stamina,GetActorProperty(0,APROP_Stamina)-1);
 			delay(1);
 		}
 		
