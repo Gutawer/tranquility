@@ -37,7 +37,7 @@ script "TQ_JumpHeight" enter
 	while(1)
 	{
 		Stamina=GetActorProperty(0,APROP_Stamina);
-		NewJumpZ=fixedmul(6.0,fixeddiv(Stamina,100));
+		NewJumpZ=3.5+fixedmul(2.5,fixeddiv(Stamina,100));
 		SetActorProperty(0,APROP_JumpZ,NewJumpZ);
 		delay(1);
 	}	
