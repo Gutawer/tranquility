@@ -1,0 +1,16 @@
+class Z_TQ_Pistol : Pistol
+{
+	Default
+	{
+		Weapon.KickBack 100;
+		Weapon.BobRangeX 0.65;
+		Weapon.BobRangeY 0.5;
+		Weapon.BobSpeed 2.5;
+		Weapon.BobStyle "InverseSmooth";
+		Weapon.SlotNumber 2;
+		Weapon.AmmoType "TQ_9mm_Mag";
+		+WEAPON.NOAUTOFIRE;
+		+WEAPON.NO_AUTO_SWITCH;
+		+WEAPON.AMMO_OPTIONAL;
+	}
+}
