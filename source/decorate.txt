@@ -17,7 +17,7 @@
 //------------------------------------------------------------
 Actor TQ_Player : Doomplayer
 {
-	Player.StartItem "TQ_9mm_Pistol"
+	Player.StartItem "TQ_Pistol" //"TQ_9mm_Pistol"
 	Player.StartItem "TQ_9mm_Pistol_RoundsInMag", 15
 	Player.StartItem "TQ_9mm_Pistol_RoundInChamber", 1
 	Player.StartItem "TQ_9mm_Mag", 3

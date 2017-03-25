@@ -14,19 +14,19 @@ script "TQ_MoveSpeed" enter
 {
 	int CurrentHealth;
 	int AdjustedSpeed;
-	
+
 	while(1)
 	{
 		CurrentHealth=GetActorProperty(0,APROP_Health);
 		AdjustedSpeed=fixeddiv(currenthealth,25);
 		If (AdjustedSpeed>1.0) { AdjustedSpeed=1.0; }
 		if (AdjustedSpeed<0.5) { AdjustedSpeed=0.5; }
-		
+
 		SetActorProperty(0,APROP_Speed,AdjustedSpeed);
-		
+
 		//print(f:GetActorProperty(0,APROP_Speed));
-		
-		delay(1);		
+
+		delay(1);
 	}
 }
 
@@ -40,19 +40,19 @@ script "TQ_JumpHeight" enter
 		NewJumpZ=3.5+fixedmul(2.5,fixeddiv(Stamina,100));
 		SetActorProperty(0,APROP_JumpZ,NewJumpZ);
 		delay(1);
-	}	
+	}
 }
 
 
 script "TQ_Dashing" enter
 {
-	int LeftTaps, RightTaps, ForwardTaps;	
+	int LeftTaps, RightTaps, ForwardTaps;
 	int Dash, DashAngle, DashRegen;
-	
+
 	while (1)
 	{
 		DashAngle=GetActorAngle(0) >> 8;
-		
+
 		for (int i=1; i<=25; i++)
 		{
 			//print(i:ForwardTaps,s:"\n",i:i);
@@ -62,7 +62,7 @@ script "TQ_Dashing" enter
 			{	LeftTaps++; i=1; }
 			else if ((GetPlayerInput(-1,INPUT_BUTTONS) & BT_MOVERIGHT) && !(GetPlayerInput(-1,INPUT_OLDBUTTONS) & BT_MOVERIGHT))
 			{	RightTaps++; i=1; }
-			
+
 			if (ForwardTaps >= 2)
 			{
 				//print(i:ForwardTaps,s:"\nDoubleTap Dash!");
@@ -70,7 +70,7 @@ script "TQ_Dashing" enter
 				DashRegen=70;
 				break;
 			}
-			
+
 			if (LeftTaps >= 2)
 			{
 				//print(i:ForwardTaps,s:"\nDoubleTap Dash!");
@@ -79,7 +79,7 @@ script "TQ_Dashing" enter
 				DashRegen=35;
 				break;
 			}
-			
+
 			if (RightTaps >= 2)
 			{
 				//print(i:ForwardTaps,s:"\nDoubleTap Dash!");
@@ -90,14 +90,14 @@ script "TQ_Dashing" enter
 			}
 			delay(1);
 		}
-		
+
 		if (ForwardTaps>0)
 		{ ForwardTaps--; }
 		if (LeftTaps>0)
 		{ LeftTaps--; }
 		if (RightTaps>0)
 		{ RightTaps--; }
-		
+
 		while(Dash>0)
 		{
 			if (CheckPlayerOnGround()==0)
@@ -107,7 +107,7 @@ script "TQ_Dashing" enter
 			SetActorProperty(0,APROP_Stamina,GetActorProperty(0,APROP_Stamina)-1);
 			delay(1);
 		}
-		
+
 		if(DashRegen>1)
 		{
 			//print(s:"cooldown...");
@@ -115,7 +115,7 @@ script "TQ_Dashing" enter
 			LeftTaps=0;
 			RightTaps=0;
 		}
-		
+
 		delay(DashRegen);
 		DashRegen=1;
 	}
@@ -144,7 +144,7 @@ script "TQ_Mantling" enter	//somewhat taken from Hideous Destructor, heavily mod
 			GetActorAngle(0)>>8,
 			WARPF_ABSOLUTEPOSITION|WARPF_MOVEPTR|WARPF_TOFLOOR|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE);
 		mantleheight=GetActorZ(89430+PlayerNumber())-GetActorZ(0);
-		
+
 		if ((GetPlayerInput (-1, MODINPUT_BUTTONS) & BT_JUMP) && !(GetPlayerInput (-1, MODINPUT_BUTTONS) & BT_CROUCH))
 		{
 			if (mantleheight <= fixeddiv(stamina,2) && mantleheight > 24.0)
