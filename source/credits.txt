@@ -11,3 +11,6 @@ Code
 
 - SidDoyle
 	RealAim (aiming inertia and viewbob)
+
+- SanyaWaffles
+	CheckButtonPress (GetPlayerInput wrapper)
