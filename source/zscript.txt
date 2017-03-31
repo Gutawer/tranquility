@@ -1,5 +1,3 @@
-
-
 class TQ_Pistol : Weapon {
 	bool SlideLocked;
 	bool SlideBack;
@@ -9,6 +7,11 @@ class TQ_Pistol : Weapon {
 
 	Default	{
 		Weapon.SlotNumber 2;
+	}
+
+	override void PostBeginPlay() {
+		RoundInChamber = 1;
+		RoundsInMag = 7;
 	}
 
 	States {
