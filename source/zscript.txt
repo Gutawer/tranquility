@@ -4,6 +4,7 @@ class TQ_Pistol : Weapon {
 	bool RoundInChamber;
 	bool SafetyOn;
 	bool MagIn;
+	int RoundsInMag;
 
 	Default	{
 		Weapon.SlotNumber 2;
