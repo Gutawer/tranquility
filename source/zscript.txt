@@ -1,18 +1,25 @@
 class TQ_Pistol : Weapon {
+	enum BulletState {
+		empty,
+		live,
+		fired,
+	};
+
 	bool SlideLocked;
-	bool RoundInChamber;
 	bool SafetyOn;
 	bool MagIn;
-	double SlidePosition;
 	int RoundsInMag;
+	BulletState Chamber;
+	double SlidePosition;
 
 	Default	{
 		Weapon.SlotNumber 2;
 	}
 
 	override void PostBeginPlay() {
-		RoundInChamber = 1;
+		Chamber = live;
 		RoundsInMag = 7;
+		super.PostBeginPlay();
 	}
 
 	States {
@@ -36,7 +43,7 @@ class TQ_Pistol : Weapon {
 		Reload:
 			TNT1 A 5 {
 				A_Print("Reload",1.0);
-				invoker.RoundInChamber=true;
+				invoker.Chamber=live;
 				invoker.RoundsInMag=7;
 			}
 			Goto Ready;
