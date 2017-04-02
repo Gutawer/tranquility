@@ -1,8 +1,8 @@
-nashmove
-realaim
-tq_functions
-tq_aiming
-tq_offsets
-tq_health
-tq_movement
-tq_stamina
+//nashmove
+//realaim
+//tq_functions
+//tq_aiming
+//tq_offsets
+//tq_health
+//tq_movement
+//tq_stamina
