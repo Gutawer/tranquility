@@ -19,6 +19,7 @@ class TQ_Pistol : Weapon {
 	override void PostBeginPlay() {
 		Chamber = live;
 		RoundsInMag = 7;
+		MagIn = true;
 		super.PostBeginPlay();
 	}
 
@@ -41,11 +42,13 @@ class TQ_Pistol : Weapon {
 			TNT1 A 1 PullTrigger();
 			Goto Ready;
 		Reload:
-			TNT1 A 5 {
-				A_Print("Reload",1.0);
-				invoker.Chamber=live;
-				invoker.RoundsInMag=7;
-			}
+			TNT1 A 5 MagRelease();
+			TNT1 A 5 MagicReload();
+			TNT1 A 5 MagInsert();
+			Goto Ready;
+		AltFire:
+			TNT1 A 1 A_Print("PullSlide",0.5);
+			TNT1 A 5 SlideBack();
 			Goto Ready;
 	}
 
@@ -60,6 +63,9 @@ class TQ_Pistol : Weapon {
 		}
 		if(TQ_CheckButtonPress(BT_RELOAD)) {
 			return ResolveState("Reload");
+		}
+		if(TQ_CheckButtonPress(BT_ALTATTACK)) {
+			return ResolveState("AltFire");
 		}
 		A_WeaponReady(WRF_NOFIRE|WRF_NOPRIMARY|WRF_NOSECONDARY);
 		return ResolveState(null);
@@ -88,10 +94,25 @@ class TQ_Pistol : Weapon {
 	}
 
 	action void SlideForward() {
-		if(invoker.RoundsInMag>0) {
+		if(invoker.MagIn==true && invoker.RoundsInMag>0) {
 			invoker.RoundsInMag--;
 			invoker.Chamber=live;
 		}
+	}
+
+	action void MagRelease() {
+		A_Print("MagOut",0.5);
+		invoker.MagIn=false;
+	}
+
+	action void MagicReload() {
+		A_Print("Magic Reload",0.5);
+		invoker.RoundsInMag=7;
+	}
+
+	action void MagInsert() {
+		A_Print("MagIn",0.5);
+		invoker.MagIn=true;
 	}
 }
 
