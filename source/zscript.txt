@@ -31,18 +31,7 @@ class TQ_Pistol : Weapon {
 			TNT1 A 1 TQ_InputChecker();
 			Loop;
 		Fire:
-			TNT1 A 0;
-			TNT1 A 1 {
-				if(invoker.RoundInChamber==true) {
-					A_Print("Bang!",0.1);
-					A_PlaySound("weapons/pistol");
-					invoker.RoundInChamber=false;
-					if(invoker.RoundsInMag>0) {
-						invoker.RoundsInMag--;
-						invoker.RoundInChamber=true;
-					}
-				}
-			}
+			TNT1 A 1 PullTrigger();
 			Goto Ready;
 		Reload:
 			TNT1 A 5 {
@@ -69,13 +58,34 @@ class TQ_Pistol : Weapon {
 		return ResolveState(null);
 	}
 
-	//PullTrigger
-	//FireBullet
-	//Slideback
-	//EjectRound
-	//SlideForward
-	//ChamberFromMag
+	action void PullTrigger() {
+		if(invoker.Chamber==live) {
+			FireBullet();
+		}
+	}
 
+	action void FireBullet() {
+		A_Print("Bang!",0.1);
+		A_PlaySound("weapons/pistol");
+		invoker.Chamber=fired;
+		SlideBack();
+	}
+
+	action void SlideBack() {
+		EjectRound();
+		SlideForward();
+	}
+
+	action void EjectRound() {
+		invoker.Chamber=empty;
+	}
+
+	action void SlideForward() {
+		if(invoker.RoundsInMag>0) {
+			invoker.RoundsInMag--;
+			invoker.Chamber=live;
+		}
+	}
 }
 
 //------------------------------------------------------------
