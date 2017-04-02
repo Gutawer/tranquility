@@ -78,21 +78,25 @@ class TQ_Pistol : Weapon {
 
 }
 
-
 //------------------------------------------------------------
 //
 // Player Definition
 //
 //------------------------------------------------------------
-Class TQ_Player : Doomplayer
+class TQ_Player : Doomplayer
 {
 	Default {
-		Player.StartItem "TQ_Pistol" //"TQ_9mm_Pistol"
-		Player.StartItem "Fist"
-		Player.Viewheight 50
-		Player.AttackZOffset 26
-		Player.ForwardMove 1.0
-		Player.SideMove 0.8
-		Player.RunHealth 35
-		Player.JumpZ 5.0
+		Player.StartItem "TQ_Pistol";
+		Player.StartItem "Fist";
+		Player.Viewheight 50;
+		Player.AttackZOffset 26;
+		Player.ForwardMove 1.0;
+		Player.SideMove 0.8;
+		Player.RunHealth 35;
+		Player.JumpZ 5.0;
+	}
+
+	override void PostBeginPlay() {
+		console.printf("Using TQ_Player");
+	}
 }

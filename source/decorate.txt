@@ -3,18 +3,19 @@
 // Includes
 //
 //------------------------------------------------------------
-#include "decorate/nashmove.txt"
-#include "decorate/tq_generic.txt"
-#include "decorate/tq_ammo.txt"
-#include "decorate/tq_bullets.txt"
-#include "decorate/tq_9mm_pistol.txt"
-#include "decorate/tq_enemies.txt"
+//#include "decorate/nashmove.txt"
+//#include "decorate/tq_generic.txt"
+//#include "decorate/tq_ammo.txt"
+//#include "decorate/tq_bullets.txt"
+//#include "decorate/tq_9mm_pistol.txt"
+//#include "decorate/tq_enemies.txt"
 
 //------------------------------------------------------------
 //
 // Player Definition
 //
 //------------------------------------------------------------
+/*
 Actor TQ_Player : Doomplayer
 {
 	Player.StartItem "TQ_Pistol" //"TQ_9mm_Pistol"
@@ -33,6 +34,7 @@ Actor TQ_Player : Doomplayer
 	var float user_offsetweaponyaw;
 	var float user_offsetweaponpitch;
 }
+*/
 
 actor Mantler	//Copied (with some changes) from Hideous Destructor
 {
