@@ -43,12 +43,12 @@ class TQ_Pistol : Weapon {
 			Goto Ready;
 		Reload:
 			TNT1 A 5 MagRelease();
-			TNT1 A 5 MagicReload();
+			TNT1 A 15 MagicReload();
 			TNT1 A 5 MagInsert();
 			Goto Ready;
 		AltFire:
 			TNT1 A 1 A_Print("PullSlide",0.5);
-			TNT1 A 5 SlideBack();
+			TNT1 A 5 PullSlide();
 			Goto Ready;
 	}
 
@@ -77,10 +77,16 @@ class TQ_Pistol : Weapon {
 		}
 	}
 
+	action void PullSlide() {
+		A_PlaySound("TQ9mm_SlidePull",CHAN_AUTO);
+		SlideBack();
+	}
+
 	action void FireBullet() {
 		A_Print("Bang!",0.1);
-		A_PlaySound("weapons/pistol");
+		A_PlaySound("weapons/pistol",CHAN_AUTO);
 		invoker.Chamber=fired;
+		A_PlaySound("TQ9mm_SlideFast",CHAN_AUTO);
 		SlideBack();
 	}
 
@@ -94,6 +100,7 @@ class TQ_Pistol : Weapon {
 	}
 
 	action void SlideForward() {
+		A_PlaySound("TQ9mm_SlideSnap",CHAN_AUTO);
 		if(invoker.MagIn==true && invoker.RoundsInMag>0) {
 			invoker.RoundsInMag--;
 			invoker.Chamber=live;
@@ -102,6 +109,7 @@ class TQ_Pistol : Weapon {
 
 	action void MagRelease() {
 		A_Print("MagOut",0.5);
+		A_PlaySound("TQMagDrop",CHAN_AUTO);
 		invoker.MagIn=false;
 	}
 
@@ -112,6 +120,7 @@ class TQ_Pistol : Weapon {
 
 	action void MagInsert() {
 		A_Print("MagIn",0.5);
+		A_PlaySound("TQMagIn",CHAN_AUTO);
 		invoker.MagIn=true;
 	}
 }
