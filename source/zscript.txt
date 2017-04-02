@@ -95,8 +95,4 @@ class TQ_Player : Doomplayer
 		Player.RunHealth 35;
 		Player.JumpZ 5.0;
 	}
-
-	override void PostBeginPlay() {
-		console.printf("Using TQ_Player");
-	}
 }
