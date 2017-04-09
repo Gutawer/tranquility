@@ -5,21 +5,29 @@ class TQ_Pistol : Weapon {
 		fired,
 	};
 
+	enum ContextType {
+		Primary,
+		Maint,
+	};
+
 	bool SlideLocked;
 	bool SafetyOn;
 	bool MagIn;
 	int RoundsInMag;
-	BulletState Chamber;
 	double SlidePosition;
+	BulletState Chamber;
+	ContextType CurrentContext;
 
 	Default	{
 		Weapon.SlotNumber 2;
+		Scale 0.5;
 	}
 
 	override void PostBeginPlay() {
 		Chamber = live;
 		RoundsInMag = 7;
 		MagIn = true;
+		CurrentContext=Primary;
 		super.PostBeginPlay();
 	}
 
@@ -28,11 +36,22 @@ class TQ_Pistol : Weapon {
 			PISG P -1;
 			Loop;
 		Select:
-			TNT1 A 0 A_Print("Select");
+			TNT1 A 0
+			{
+				A_SetCrosshair(99); //Set null crosshair (assuming player doesn't override it)
+				A_Overlay(2,"Mag");
+				A_Overlay(3,"Frame");
+				A_Overlay(4,"Slide");
+				A_OverlayFlags(2,PSPF_ADDBOB,0);
+				A_OverlayFlags(3,PSPF_ADDBOB,0);
+				A_OverlayFlags(4,PSPF_ADDBOB,0);
+			}
+		SelectLoop:
+			TNT1 A 0 A_PrintBold("Select");
 			TNT1 A 1 A_Raise;
 			Loop;
 		Deselect:
-			TNT1 A 0 A_Print("Deselect");
+			TNT1 A 0 A_PrintBold("Deselect");
 			TNT1 A 1 A_Lower;
 			Loop;
 		Ready:
@@ -46,10 +65,21 @@ class TQ_Pistol : Weapon {
 			TNT1 A 15 MagicReload();
 			TNT1 A 5 MagInsert();
 			Goto Ready;
-		AltFire:
-			TNT1 A 1 A_Print("PullSlide",0.5);
-			TNT1 A 5 PullSlide();
+		PullSlide:
+			TNT1 A 1;
+			TNT1 A 1 PullSlide();
 			Goto Ready;
+		Mag:
+			9MAG A 1;
+			Loop;
+		Frame:
+			9FRM A 1;
+			Loop;
+		Slide:
+			9SLD A 1 {
+				A_OverlayOffset(4,-16.0*invoker.SlidePosition,0.0);
+			}
+			Loop;
 	}
 
 	//Credit to SanyaWaffles via Discord
@@ -58,32 +88,59 @@ class TQ_Pistol : Weapon {
 	}
 
 	action state TQ_InputChecker() {
-		if(TQ_CheckButtonPress(BT_ATTACK)) {
-			return ResolveState("Fire");
+		if(invoker.CurrentContext==Primary) {
+			if(TQ_CheckButtonPress(BT_ATTACK)) {
+				return ResolveState("Fire");
+			}
+			else if(TQ_CheckButtonPress(BT_ALTATTACK)) {
+				A_PrintBold("Maintenance");
+				invoker.CurrentContext=Maint;
+			}
+			else if(TQ_CheckButtonPress(BT_RELOAD)) {
+				return ResolveState("Reload");
+			}
 		}
-		if(TQ_CheckButtonPress(BT_RELOAD)) {
-			return ResolveState("Reload");
+		else if(invoker.currentcontext==Maint) {
+			if(!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK)) {
+				A_PrintBold("Back to Primary");
+				invoker.CurrentContext=Primary;
+			}
+			else if(invoker.SlideLocked && TQ_CheckButtonPress(BT_ATTACK)) {
+				A_PrintBold("SlideRelease");
+				SlideForward();
+			}
+			else if(GetPlayerInput(INPUT_BUTTONS) & BT_RELOAD) {
+				return ResolveState("PullSlide");
+			}
 		}
+
+		/*
 		if(TQ_CheckButtonPress(BT_ALTATTACK)) {
 			return ResolveState("AltFire");
-		}
+		}*/
+
 		A_WeaponReady(WRF_NOFIRE|WRF_NOPRIMARY|WRF_NOSECONDARY);
 		return ResolveState(null);
 	}
 
 	action void PullTrigger() {
-		if(invoker.Chamber==live) {
+		if(invoker.Chamber==live && !invoker.SlideLocked) {
 			FireBullet();
 		}
 	}
 
 	action void PullSlide() {
-		A_PlaySound("TQ9mm_SlidePull",CHAN_AUTO);
-		SlideBack();
+		if(invoker.SlidePosition<1.0) {
+			invoker.SlidePosition=+0.01;
+		}
+		//A_PlaySound("TQ9mm_SlidePull",CHAN_AUTO);
+		if (invoker.SlidePosition=1.0) {
+			SlideBack();
+		}
 	}
 
 	action void FireBullet() {
-		A_Print("Bang!",0.1);
+		A_PrintBold("Bang!",0.1);
 		A_PlaySound("weapons/pistol",CHAN_AUTO);
 		invoker.Chamber=fired;
 		A_PlaySound("TQ9mm_SlideFast",CHAN_AUTO);
@@ -92,7 +149,14 @@ class TQ_Pistol : Weapon {
 
 	action void SlideBack() {
 		EjectRound();
-		SlideForward();
+		if(invoker.MagIn==true && invoker.RoundsInMag<=0) {
+			invoker.slideposition=1.0;
+			invoker.SlideLocked=true;
+			A_PrintBold("SlideLocked!");
+		}
+		else {
+			SlideForward();
+		}
 	}
 
 	action void EjectRound() {
@@ -101,6 +165,8 @@ class TQ_Pistol : Weapon {
 
 	action void SlideForward() {
 		A_PlaySound("TQ9mm_SlideSnap",CHAN_AUTO);
+		invoker.SlideLocked=false;
+		invoker.slideposition=0.0;
 		if(invoker.MagIn==true && invoker.RoundsInMag>0) {
 			invoker.RoundsInMag--;
 			invoker.Chamber=live;
@@ -108,18 +174,18 @@ class TQ_Pistol : Weapon {
 	}
 
 	action void MagRelease() {
-		A_Print("MagOut",0.5);
+		A_PrintBold("MagOut",0.5);
 		A_PlaySound("TQMagDrop",CHAN_AUTO);
 		invoker.MagIn=false;
 	}
 
 	action void MagicReload() {
-		A_Print("Magic Reload",0.5);
+		A_PrintBold("Magic Reload",0.5);
 		invoker.RoundsInMag=7;
 	}
 
 	action void MagInsert() {
-		A_Print("MagIn",0.5);
+		A_PrintBold("MagIn",0.5);
 		A_PlaySound("TQMagIn",CHAN_AUTO);
 		invoker.MagIn=true;
 	}
