@@ -76,7 +76,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 			A_ClearOverlays;
 		}
 		wait
-	
+
 	//------------------------------------------------------------
 	//Ready
 	//------------------------------------------------------------
@@ -100,7 +100,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 			A_WeaponOffset(CAllACS("GetOffset",2)*(-0.25),CAllACS("GetOffset",3)*(-0.2),WOF_ADD|WOF_ADD);
 		}
 		Goto Ready
-	
+
 	//------------------------------------------------------------
 	//Basic player-triggered actions
 	//------------------------------------------------------------
@@ -132,11 +132,11 @@ ACTOR TQ_9mm_Pistol : Weapon
 	AltFire:
 		PISG B 0
 		Goto PullSlide
-	
+
 	//------------------------------------------------------------
 	//Gun Functions
 	//------------------------------------------------------------
-	SlideBack:	
+	SlideBack:
 		TNT1 A 0
 		{
 			A_TakeInventory("TQ_9mm_Pistol_RoundInChamber");
@@ -160,7 +160,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		TNT1 A 0
 		{
 			A_TakeInventory("TQ_9mm_Pistol_RoundsInMag");
-		}			
+		}
 		Stop
 	MagInsert:
 		TNT1 A 0
@@ -169,11 +169,11 @@ ACTOR TQ_9mm_Pistol : Weapon
 			A_GiveInventory("TQ_9mm_Pistol_RoundsInMag",15);
 		}
 		Stop
-			
-	
+
+
 	//------------------------------------------------------------
 	//Basic reload functionality
-	//------------------------------------------------------------		
+	//------------------------------------------------------------
 	Reload:
 		"####" "#" 0
 		{
@@ -205,7 +205,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 			{	return state("PullSlide"); }
 			Return state("");
 		}
-		Goto Ready	
+		Goto Ready
 	ReleaseSlide:
 		PISG A 1
 		{
@@ -236,7 +236,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		}
 		"####" "###" 1 A_WeaponOffset(0,-0.5,WOF_ADD)
 		Goto Ready
-	
+
 	//------------------------------------------------------------
 	//Flash and Recoil+Reset
 	//------------------------------------------------------------
@@ -248,7 +248,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		TNT1 A 1
 		TNT1 A 1 {	CAllACS("TQ_RecoilOffset",RecoilStrength); }
 	RecoilControl:
-		TNT1 AAAA 1 
+		TNT1 AAAA 1
 		{
 			If(!(GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
 			{	return state("AbandonRecoilControl"); }
@@ -258,10 +258,10 @@ ACTOR TQ_9mm_Pistol : Weapon
 	AbandonRecoilControl:
 		TNT1 A 1
 		Stop
-	
+
 	//------------------------------------------------------------
 	//Sight overlay loops
-	//------------------------------------------------------------	
+	//------------------------------------------------------------
 	FSight:
 		TNT1 A 0
 		{
@@ -274,7 +274,7 @@ ACTOR TQ_9mm_Pistol : Weapon
 		loop
 	HideFSight:
 		TNT1 A 1
-		Goto FSight	
+		Goto FSight
 	RSight:
 		TNT1 A 0
 		{
