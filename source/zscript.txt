@@ -1,22 +1,30 @@
+class SlideData : Thinker {
+    double pos;
+    double vel;
+    bool locked;
+
+    override void Tick() {
+        pos += vel;
+        pos = clamp(pos, 0, 1);
+		if(pos == 1 || pos == 0) {
+			vel = 0;
+		}
+		super.Tick();
+    }
+}
+
+/*struct RoundData {
+	bool Fired;
+}
+
+struct ChamberData {
+	RoundData Round;
+	bool Empty;
+}*/
+
 class TQ_Pistol : Weapon {
-	enum BulletState {
-		empty,
-		live,
-		fired,
-	};
-
-	enum ContextType {
-		Primary,
-		Maint,
-	};
-
-	bool SlideLocked;
 	bool SafetyOn;
-	bool MagIn;
-	int RoundsInMag;
-	double SlidePosition;
-	BulletState Chamber;
-	ContextType CurrentContext;
+	SlideData slide;
 
 	Default	{
 		Weapon.SlotNumber 2;
@@ -24,10 +32,11 @@ class TQ_Pistol : Weapon {
 	}
 
 	override void PostBeginPlay() {
-		Chamber = live;
-		RoundsInMag = 7;
-		MagIn = true;
-		CurrentContext=Primary;
+		//Chamber = live;
+		//RoundsInMag = 7;
+		//MagIn = true;
+		//CurrentContext=Primary;
+		slide = new("SlideData");
 		super.PostBeginPlay();
 	}
 
@@ -36,8 +45,7 @@ class TQ_Pistol : Weapon {
 			PISG P -1;
 			Loop;
 		Select:
-			TNT1 A 0
-			{
+			TNT1 A 0 {
 				A_SetCrosshair(99); //Set null crosshair (assuming player doesn't override it)
 				A_Overlay(2,"Mag");
 				A_Overlay(3,"Frame");
@@ -55,19 +63,18 @@ class TQ_Pistol : Weapon {
 			TNT1 A 1 A_Lower;
 			Loop;
 		Ready:
-			TNT1 A 1 TQ_InputChecker();
+			TNT1 A 1; //TQ_InputChecker();
 			Loop;
 		Fire:
-			TNT1 A 1 PullTrigger();
+			TNT1 A 1; //PullTrigger();
 			Goto Ready;
 		Reload:
-			TNT1 A 5 MagRelease();
-			TNT1 A 15 MagicReload();
-			TNT1 A 5 MagInsert();
+			TNT1 A 5; //MagRelease();
+			TNT1 A 15; //MagicReload();
+			TNT1 A 5; //MagInsert();
 			Goto Ready;
 		PullSlide:
-			TNT1 A 1;
-			TNT1 A 1 PullSlide();
+			TNT1 A 1; //PullSlide();
 			Goto Ready;
 		Mag:
 			9MAG A 1;
@@ -76,11 +83,52 @@ class TQ_Pistol : Weapon {
 			9FRM A 1;
 			Loop;
 		Slide:
-			9SLD A 1 {
-				A_OverlayOffset(4,-16.0*invoker.SlidePosition,0.0);
-			}
+			9SLD A 1 A_OverlayOffset(4,-16.0 * slide.pos);
 			Loop;
 	}
+}
+
+//------------------------------------------------------------
+//
+// Player Definition
+//
+//------------------------------------------------------------
+class TQ_Player : Doomplayer
+{
+	Default {
+		Player.StartItem "TQ_Pistol";
+		Player.StartItem "Fist";
+		Player.Viewheight 50;
+		Player.AttackZOffset 26;
+		Player.ForwardMove 1.0;
+		Player.SideMove 0.8;
+		Player.RunHealth 35;
+		Player.JumpZ 5.0;
+	}
+}
+
+/*
+class TQ_Pistol : Weapon {
+	enum BulletState {
+		empty,
+		live,
+		fired,
+	};
+
+	enum ContextType {
+		Primary,
+		Maint,
+	};
+
+	bool SlideLocked;
+	bool MagIn;
+	int RoundsInMag;
+	double SlidePosition;
+	BulletState Chamber;
+	ContextType CurrentContext;
+
+
+
 
 	//Credit to SanyaWaffles via Discord
 	action bool TQ_CheckButtonPress(int btn) {
@@ -114,11 +162,6 @@ class TQ_Pistol : Weapon {
 			}
 		}
 
-		/*
-		if(TQ_CheckButtonPress(BT_ALTATTACK)) {
-			return ResolveState("AltFire");
-		}*/
-
 		A_WeaponReady(WRF_NOFIRE|WRF_NOPRIMARY|WRF_NOSECONDARY);
 		return ResolveState(null);
 	}
@@ -131,11 +174,7 @@ class TQ_Pistol : Weapon {
 
 	action void PullSlide() {
 		if(invoker.SlidePosition<1.0) {
-			invoker.SlidePosition=+0.01;
-		}
-		//A_PlaySound("TQ9mm_SlidePull",CHAN_AUTO);
-		if (invoker.SlidePosition=1.0) {
-			SlideBack();
+			invoker.SlidePosition+=0.25;
 		}
 	}
 
@@ -189,23 +228,4 @@ class TQ_Pistol : Weapon {
 		A_PlaySound("TQMagIn",CHAN_AUTO);
 		invoker.MagIn=true;
 	}
-}
-
-//------------------------------------------------------------
-//
-// Player Definition
-//
-//------------------------------------------------------------
-class TQ_Player : Doomplayer
-{
-	Default {
-		Player.StartItem "TQ_Pistol";
-		Player.StartItem "Fist";
-		Player.Viewheight 50;
-		Player.AttackZOffset 26;
-		Player.ForwardMove 1.0;
-		Player.SideMove 0.8;
-		Player.RunHealth 35;
-		Player.JumpZ 5.0;
-	}
-}
+}*/
