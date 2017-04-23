@@ -13,15 +13,6 @@ class SlideData : Thinker {
     }
 }
 
-/*struct RoundData {
-	bool Fired;
-}
-
-struct ChamberData {
-	RoundData Round;
-	bool Empty;
-}*/
-
 class TQ_Pistol : Weapon {
 	bool SafetyOn;
 	SlideData slide;
@@ -32,10 +23,6 @@ class TQ_Pistol : Weapon {
 	}
 
 	override void PostBeginPlay() {
-		//Chamber = live;
-		//RoundsInMag = 7;
-		//MagIn = true;
-		//CurrentContext=Primary;
 		slide = new("SlideData");
 		super.PostBeginPlay();
 	}
@@ -63,18 +50,18 @@ class TQ_Pistol : Weapon {
 			TNT1 A 1 A_Lower;
 			Loop;
 		Ready:
-			TNT1 A 1; //TQ_InputChecker();
+			TNT1 A 1 A_WeaponReady;
 			Loop;
 		Fire:
-			TNT1 A 1; //PullTrigger();
+			TNT1 A 1;
 			Goto Ready;
 		Reload:
-			TNT1 A 5; //MagRelease();
-			TNT1 A 15; //MagicReload();
-			TNT1 A 5; //MagInsert();
+			TNT1 A 5;
+			TNT1 A 15;
+			TNT1 A 5;
 			Goto Ready;
 		PullSlide:
-			TNT1 A 1; //PullSlide();
+			TNT1 A 1;
 			Goto Ready;
 		Mag:
 			9MAG A 1;
@@ -106,126 +93,3 @@ class TQ_Player : Doomplayer
 		Player.JumpZ 5.0;
 	}
 }
-
-/*
-class TQ_Pistol : Weapon {
-	enum BulletState {
-		empty,
-		live,
-		fired,
-	};
-
-	enum ContextType {
-		Primary,
-		Maint,
-	};
-
-	bool SlideLocked;
-	bool MagIn;
-	int RoundsInMag;
-	double SlidePosition;
-	BulletState Chamber;
-	ContextType CurrentContext;
-
-
-
-
-	//Credit to SanyaWaffles via Discord
-	action bool TQ_CheckButtonPress(int btn) {
-		return ((GetPlayerInput(INPUT_BUTTONS) & btn) && !(GetPlayerInput(INPUT_OLDBUTTONS) & btn));
-	}
-
-	action state TQ_InputChecker() {
-		if(invoker.CurrentContext==Primary) {
-			if(TQ_CheckButtonPress(BT_ATTACK)) {
-				return ResolveState("Fire");
-			}
-			else if(TQ_CheckButtonPress(BT_ALTATTACK)) {
-				A_PrintBold("Maintenance");
-				invoker.CurrentContext=Maint;
-			}
-			else if(TQ_CheckButtonPress(BT_RELOAD)) {
-				return ResolveState("Reload");
-			}
-		}
-		else if(invoker.currentcontext==Maint) {
-			if(!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK)) {
-				A_PrintBold("Back to Primary");
-				invoker.CurrentContext=Primary;
-			}
-			else if(invoker.SlideLocked && TQ_CheckButtonPress(BT_ATTACK)) {
-				A_PrintBold("SlideRelease");
-				SlideForward();
-			}
-			else if(GetPlayerInput(INPUT_BUTTONS) & BT_RELOAD) {
-				return ResolveState("PullSlide");
-			}
-		}
-
-		A_WeaponReady(WRF_NOFIRE|WRF_NOPRIMARY|WRF_NOSECONDARY);
-		return ResolveState(null);
-	}
-
-	action void PullTrigger() {
-		if(invoker.Chamber==live && !invoker.SlideLocked) {
-			FireBullet();
-		}
-	}
-
-	action void PullSlide() {
-		if(invoker.SlidePosition<1.0) {
-			invoker.SlidePosition+=0.25;
-		}
-	}
-
-	action void FireBullet() {
-		A_PrintBold("Bang!",0.1);
-		A_PlaySound("weapons/pistol",CHAN_AUTO);
-		invoker.Chamber=fired;
-		A_PlaySound("TQ9mm_SlideFast",CHAN_AUTO);
-		SlideBack();
-	}
-
-	action void SlideBack() {
-		EjectRound();
-		if(invoker.MagIn==true && invoker.RoundsInMag<=0) {
-			invoker.slideposition=1.0;
-			invoker.SlideLocked=true;
-			A_PrintBold("SlideLocked!");
-		}
-		else {
-			SlideForward();
-		}
-	}
-
-	action void EjectRound() {
-		invoker.Chamber=empty;
-	}
-
-	action void SlideForward() {
-		A_PlaySound("TQ9mm_SlideSnap",CHAN_AUTO);
-		invoker.SlideLocked=false;
-		invoker.slideposition=0.0;
-		if(invoker.MagIn==true && invoker.RoundsInMag>0) {
-			invoker.RoundsInMag--;
-			invoker.Chamber=live;
-		}
-	}
-
-	action void MagRelease() {
-		A_PrintBold("MagOut",0.5);
-		A_PlaySound("TQMagDrop",CHAN_AUTO);
-		invoker.MagIn=false;
-	}
-
-	action void MagicReload() {
-		A_PrintBold("Magic Reload",0.5);
-		invoker.RoundsInMag=7;
-	}
-
-	action void MagInsert() {
-		A_PrintBold("MagIn",0.5);
-		A_PlaySound("TQMagIn",CHAN_AUTO);
-		invoker.MagIn=true;
-	}
-}*/
