@@ -34,9 +34,9 @@ class TQ_Pistol : Weapon {
 		Select:
 			TNT1 A 0 {
 				A_SetCrosshair(99); //Set null crosshair (assuming player doesn't override it)
-				A_Overlay(2,"Mag");
-				A_Overlay(3,"Frame");
-				A_Overlay(4,"Slide");
+				A_Overlay(2,"MagOverlay");
+				A_Overlay(3,"FrameOverlay");
+				A_Overlay(4,"SlideOverlay");
 				A_OverlayFlags(2,PSPF_ADDBOB,0);
 				A_OverlayFlags(3,PSPF_ADDBOB,0);
 				A_OverlayFlags(4,PSPF_ADDBOB,0);
@@ -63,14 +63,14 @@ class TQ_Pistol : Weapon {
 		PullSlide:
 			TNT1 A 1;
 			Goto Ready;
-		Mag:
+		MagOverlay:
 			9MAG A 1;
 			Loop;
-		Frame:
+		FrameOverlay:
 			9FRM A 1;
 			Loop;
-		Slide:
-			9SLD A 1 A_OverlayOffset(4,-16.0 * slide.pos);
+		SlideOverlay:
+			9SLD A 1; A_OverlayOffset(4,-16.0 * invoker.slide.pos,0,0);
 			Loop;
 	}
 }
