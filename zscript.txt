@@ -165,6 +165,16 @@ class TQ_Pistol : TQ_Weapon {
 			TNT1 A 1 TQ_PullSlide;
 			Goto Alt.Ready;
 
+		Reload.Ready:
+		Reload.MagReleaseLoop:
+			TNT1 A 1 MagRelease();
+			Loop;
+		Reload.Magic:
+			TNT1 A 15 MagicReload();
+		Reload.MagInsertLoop:
+			TNT1 A 1 MagInsert();
+			Loop;
+
 		//Overlays
 		MagOverlay:
 			9MAG A 1;
@@ -270,7 +280,7 @@ class TQ_Pistol : TQ_Weapon {
 
 	action void MagRelease() {
 		A_PlaySound("TQMagDrop",CHAN_AUTO);
-		//invoker.MagIn=false;
+
 	}
 
 	action void MagicReload() {
