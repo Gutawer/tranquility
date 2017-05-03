@@ -74,7 +74,6 @@ class TQ_Pistol : TQ_Weapon {
 		//Set up chamber values, randomize some
 		Chamber.Round.Live = false;
 		Chamber.Loaded = false;
-		if(random(0,1) == 1) { Chamber.Round.Live = true; }
 		if(random(0,1) == 1) { Chamber.Loaded = true; }
 
 		//Set up magazines, randomize some
@@ -140,7 +139,6 @@ class TQ_Pistol : TQ_Weapon {
 			TNT1 A 1 TQ_PrimaryInput;
 			Loop;
 		Primary.Fire:
-			TNT1 A 1;
 			TNT1 A 1 TQ_PullTrigger;
 			TNT1 A 1 { invoker.slide.pressure = 0; }
 			Goto Primary.Ready;
