@@ -68,7 +68,7 @@ class TQ_Pistol : TQ_Weapon {
 		Slide.Locked = false;
 		if(random(0,1) == 1) {
 			Slide.Pos = 1.0;
-			Slide.Locked = false;
+			Slide.Locked = true;
 		}
 
 		//Set up chamber values, randomize some
