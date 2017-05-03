@@ -72,7 +72,6 @@ class TQ_Pistol : TQ_Weapon {
 		}
 
 		//Set up chamber values, randomize some
-		Chamber.Round.Live = false;
 		Chamber.Loaded = false;
 		if(random(0,1) == 1) { Chamber.Loaded = true; }
 
