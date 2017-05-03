@@ -73,7 +73,10 @@ class TQ_Pistol : TQ_Weapon {
 
 		//Set up chamber values, randomize some
 		Chamber.Loaded = false;
-		if(random(0,1) == 1) { Chamber.Loaded = true; }
+		if(random(0,1) == 1) {
+			Chamber.Loaded = true;
+			Chamber.Round.Live = true;
+		}
 
 		//Set up magazines, randomize some
 		MagIndex = random(1,3);
