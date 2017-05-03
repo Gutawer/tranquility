@@ -91,7 +91,7 @@ class TQ_Pistol : TQ_Weapon {
 		}
 
 		//Slide routines that happen automatically
-		If(Slide.Locked && Slide.Pos >= 0.8) {
+		If((Slide.Locked) & (Slide.Pos >= 0.8)) {
 			Slide.Pos += (Slide.Pressure - Slide.Spring); //Spring pushes slide forward
 			Slide.Pos = clamp(Slide.Pos, 0.8, 1); //Keep slide back if lock engaged and slide is behind it
 		}
@@ -100,11 +100,11 @@ class TQ_Pistol : TQ_Weapon {
 			Slide.Pos = clamp(Slide.Pos, 0, 1); //Allow full travel otherwise
 		}
 
-		if(!SlideMovingBack() && Slide.Pos < 0.8 && !CheckSlideForward()) {
+		if((!SlideMovingBack()) & (Slide.Pos < 0.8) & (!CheckSlideForward())) {
 			LoadRoundFromMag(); //Always attempt to load a round if slide going forward and past lock
 		}
 
-		if(SlideMovingBack() && Slide.Pos > 0.9) {
+		if((SlideMovingBack()) & (Slide.Pos > 0.95)) {
 			Slide.Locked = false; //Disengage slide lock,will auto-engage if needed
 			EjectRound(); //Always attempt to load a round if slide going back and past 90%
 		}
