@@ -48,6 +48,10 @@ struct MagData {
 //------------------------------------------------------------
 class TQ_Pistol : TQ_Weapon {
 
+	const MagLayer = 2;
+	const FrameLayer = 3;
+	const SlideLayer = 4;
+
 	ChamberData Chamber; //Initialze chamber
 	SlideData Slide; //Initialize slide
 	MagData Mags[4]; //Initialize magazine array
@@ -169,7 +173,7 @@ class TQ_Pistol : TQ_Weapon {
 			9FRM A 1;
 			Loop;
 		SlideOverlay:
-			9SLD A 1 A_OverlayOffset(4,-16.0 * invoker.Slide.Pos,0,0);
+			9SLD A 1 A_OverlayOffset(SlideLayer,-16.0 * invoker.Slide.Pos,0,0);
 			TNT1 A 0 {
 				//Debugging
 				A_SetInventory("Clip",invoker.Mags[invoker.MagIndex].Rounds);
@@ -185,12 +189,12 @@ class TQ_Pistol : TQ_Weapon {
 
 	action void TQ_InitializeOverlays() {
 		A_SetCrosshair(99); //Set null crosshair (assuming player doesn't override it)
-		A_Overlay(2,"MagOverlay");
-		A_Overlay(3,"FrameOverlay");
-		A_Overlay(4,"SlideOverlay");
-		A_OverlayFlags(2,PSPF_ADDBOB,0);
-		A_OverlayFlags(3,PSPF_ADDBOB,0);
-		A_OverlayFlags(4,PSPF_ADDBOB,0);
+		A_Overlay(MagLayer,"MagOverlay");
+		A_Overlay(FrameLayer,"FrameOverlay");
+		A_Overlay(SlideLayer,"SlideOverlay");
+		A_OverlayFlags(MagLayer,PSPF_ADDBOB,0);
+		A_OverlayFlags(FrameLayer,PSPF_ADDBOB,0);
+		A_OverlayFlags(SlideLayer,PSPF_ADDBOB,0);
 	}
 
 	action state TQ_PrimaryInput() {
