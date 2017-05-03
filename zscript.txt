@@ -57,6 +57,7 @@ class TQ_Pistol : TQ_Weapon {
 	MagData Mags[4]; //Initialize magazine array
 	int MagIndex; //Current magazine. Index 0 is no mag loaded
 	bool SafetyOn; //Is the safety engaged
+	bool DoingPressCheck;
 
 	Default	{
 		Weapon.SlotNumber 2;
@@ -96,28 +97,36 @@ class TQ_Pistol : TQ_Weapon {
 		if(!Chamber.Loaded) {
 			Chamber.Round.Live=false;
 		}
+		//clamp(Slide.Pressure,0.5,0.6);
 
 		//Slide routines that happen automatically
-		If((Slide.Locked) & (Slide.Pos >= 0.8)) {
-			Slide.Pos += (Slide.Pressure - Slide.Spring); //Spring pushes slide forward
-			Slide.Pos = clamp(Slide.Pos, 0.8, 1); //Keep slide back if lock engaged and slide is behind it
-		}
-		else {
-			Slide.Pos += (Slide.Pressure - Slide.Spring); //Spring pushes slide forward
-			Slide.Pos = clamp(Slide.Pos, 0, 1); //Allow full travel otherwise
-		}
+		for(int i=1; i<=100; i++) {
 
-		if((!SlideMovingBack()) & (Slide.Pos < 0.8) & (!CheckSlideForward())) {
-			LoadRoundFromMag(); //Always attempt to load a round if slide going forward and past lock
-		}
+			if((Slide.Locked) & (Slide.Pos >= 0.8)) {
+				Slide.Pos -= ((Slide.Spring - Slide.Pressure)/100); //Spring pushes slide forward
+				Slide.Pos = clamp(Slide.Pos, 0.8, 1); //Keep slide back if lock engaged and slide is behind it
+			}
+			else if((DoingPressCheck) & (Slide.Pos <= 0.5)) {
+				Slide.Pos -= ((Slide.Spring - Slide.Pressure)/100); //Spring pushes slide forward
+				Slide.Pos = clamp(Slide.Pos, 0.0, 0.5); //Keep slide partially forward if press-checking
+			}
+			else {
+				Slide.Pos -= ((Slide.Spring - Slide.Pressure)/100); //Spring pushes slide forward
+				Slide.Pos = clamp(Slide.Pos, 0, 1); //Allow full travel otherwise
+			}
 
-		if((SlideMovingBack()) & (Slide.Pos > 0.95)) {
-			Slide.Locked = false; //Disengage slide lock,will auto-engage if needed
-			EjectRound(); //Always attempt to load a round if slide going back and past 90%
-		}
+			if((!SlideMovingBack()) & (Slide.Pos < 0.8) & (!CheckSlideForward())) {
+				LoadRoundFromMag(); //Always attempt to load a round if slide going forward and past lock
+			}
 
-		if(Mags[MagIndex].Rounds == 0 & MagIndex != 0) {
-			Slide.Locked = true;
+			if((SlideMovingBack()) & (Slide.Pos > 0.9)) {
+				Slide.Locked = false; //Disengage slide lock, will auto-engage if needed
+				EjectRound(); //Always attempt to load a round if slide going back and past 80%
+			}
+
+			if(Mags[MagIndex].Rounds == 0 & MagIndex != 0) {
+				Slide.Locked = true;
+			}
 		}
 
 		super.Tick();
@@ -149,9 +158,9 @@ class TQ_Pistol : TQ_Weapon {
 			TNT1 A 1 { invoker.slide.pressure = 0; }
 			Goto Primary.Ready;
 		Primary.Reload:
-			TNT1 A 5  MagRelease();
+			TNT1 A 15 MagRelease();
 			TNT1 A 15 MagicReload();
-			TNT1 A 5  MagInsert();
+			TNT1 A 15 MagInsert();
 			Goto Primary.Ready;
 
 		//Alt weapon action States
@@ -161,8 +170,14 @@ class TQ_Pistol : TQ_Weapon {
 		Alt.ReleaseLock:
 			TNT1 A 1 TQ_ReleaseSlideLock;
 			Goto Alt.Ready;
+		Alt.EngageLock:
+			TNT1 A 1 TQ_EngageSlideLock;
+			Goto Alt.Ready;
 		Alt.Pullslide:
 			TNT1 A 1 TQ_PullSlide;
+			Goto Alt.Ready;
+		Alt.PressCheck:
+			TNT1 A 1 TQ_PressCheck;
 			Goto Alt.Ready;
 
 		Reload.Ready:
@@ -227,21 +242,34 @@ class TQ_Pistol : TQ_Weapon {
 
 	action state TQ_AltInput() {
 		//A_Print("Alt");
+		if(!TQ_CheckButtonHold(BT_ALTATTACK)) {
+			A_Print("Alt > Primary");
+			invoker.DoingPressCheck = false;
+			invoker.Slide.Pressure = 0;
+			return ResolveState("Primary.Ready");
+		}
+
+		if(TQ_CheckButtonHold(BT_RELOAD)) {
+			A_Print("Alt > pulling");
+			if(!invoker.DoingPressCheck && invoker.Slide.Pos > 0.8 && (TQ_CheckButtonHold(BT_ATTACK))) {
+				TQ_EngageSlideLock();
+			}
+			return ResolveState("Alt.PullSlide");
+		}
 		if(TQ_CheckButtonPress(BT_ATTACK)) {
 			A_Print("Alt > Release slide lock");
 			return ResolveState("Alt.ReleaseLock");
 		}
-		if(TQ_CheckButtonHold(BT_RELOAD)) {
-			A_Print("Alt > pulling");
-			return ResolveState("Alt.PullSlide");
-		}
-		if(TQ_CheckButtonRelease(BT_RELOAD)) {
+		if(!TQ_CheckButtonHold(BT_RELOAD)) {
+			//A_Print("Alt > done pulling");
 			invoker.Slide.Pressure = 0;
-			A_Print("Alt > done pulling");
 		}
-		if(!TQ_CheckButtonHold(BT_ALTATTACK)) {
-			A_Print("Alt > Primary");
-			return ResolveState("Primary.Ready");
+		if(TQ_CheckButtonHold(BT_ATTACK)) {
+			A_Print("Alt > PressCheck");
+			return ResolveState("Alt.PressCheck");
+		}
+		if(invoker.DoingPressCheck && !TQ_CheckButtonHold(BT_ATTACK)) {
+			invoker.DoingPressCheck = false;
 		}
 		A_WeaponReady(WRF_NOFIRE|WRF_NOPRIMARY|WRF_NOSECONDARY);
 		return ResolveState(null);
@@ -251,9 +279,18 @@ class TQ_Pistol : TQ_Weapon {
 		invoker.Slide.Locked = false;
 	}
 
+	action void TQ_EngageSlideLock() {
+		invoker.Slide.Locked = true;
+	}
+
 	action void TQ_PullSlide() {
-		invoker.Slide.Pressure += 0.2; //Increase back-pressure as held
-		clamp(invoker.Slide.Pressure, 0, 2); //Maximum pressure exerted
+		invoker.Slide.Pressure += 0.1; //Increase back-pressure as held
+	}
+
+	action void TQ_PressCheck() {
+		if(invoker.Slide.Pos < 0.5) {
+			invoker.DoingPressCheck = true;
+		}
 	}
 
 	action void TQ_PullTrigger() {
@@ -297,7 +334,7 @@ class TQ_Pistol : TQ_Weapon {
 	}
 
 	action bool SlideMovingBack() {
-		if ((invoker.Slide.Pressure - invoker.Slide.Spring > 0)) {
+		if ((invoker.Slide.Pressure - invoker.Slide.Spring > 0) & (invoker.Slide.Pos != 1) & (invoker.Slide.Pos != 0)) {
 			return true;
 		}
 		return false;
