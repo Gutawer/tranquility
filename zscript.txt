@@ -20,12 +20,8 @@ class TQ_Weapon : Weapon {
 	}
 }
 
-struct RoundData {
-	bool Live; //Is the round fire-able
-}
-
 struct ChamberData {
-	RoundData Round;
+	bool Live; //Is the round fire-able
 	bool Loaded; //Is there a round in the chamber
 }
 
@@ -80,7 +76,7 @@ class TQ_Pistol : TQ_Weapon {
 		Chamber.Loaded = false;
 		if(random(0,1) == 1) {
 			Chamber.Loaded = true;
-			Chamber.Round.Live = true;
+			Chamber.Live = true;
 		}
 
 		//Set up magazines, randomize some
@@ -95,7 +91,7 @@ class TQ_Pistol : TQ_Weapon {
 	override void Tick() {
 		//Bookkeeping: if no round in chamber, it can't be live either
 		if(!Chamber.Loaded) {
-			Chamber.Round.Live=false;
+			Chamber.Live=false;
 		}
 		//clamp(Slide.Pressure,0.5,0.6);
 
@@ -294,9 +290,9 @@ class TQ_Pistol : TQ_Weapon {
 	}
 
 	action void TQ_PullTrigger() {
-		if(CheckSlideForward() && invoker.Chamber.Round.Live) {
+		if(CheckSlideForward() && invoker.Chamber.Live) {
 			invoker.Slide.Pressure = 10;
-			invoker.Chamber.Round.Live = false;
+			invoker.Chamber.Live = false;
 			A_PlaySound("weapons/pistol",CHAN_AUTO);
 		}
 	}
@@ -310,7 +306,7 @@ class TQ_Pistol : TQ_Weapon {
 	action void LoadRoundFromMag() {
 		if(!invoker.Chamber.Loaded && invoker.Mags[invoker.MagIndex].Rounds > 0) {
 			invoker.Chamber.Loaded = true;
-			invoker.Chamber.Round.Live = true;
+			invoker.Chamber.Live = true;
 			invoker.Mags[invoker.MagIndex].Rounds -= 1;
 		}
 	}
