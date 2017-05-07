@@ -221,15 +221,15 @@ class TQ_Pistol : TQ_Weapon {
 	action state TQ_PrimaryInput() {
 		//A_Print("Primary");
 		if(TQ_CheckButtonPress(BT_ATTACK)) {
-			A_Print("Primary > pull trigger");
+			//A_Print("Primary > pull trigger");
 			return ResolveState("Primary.Fire");
 		}
 		if(TQ_CheckButtonPress(BT_RELOAD)) {
-			A_Print("Primary > reload");
+			//A_Print("Primary > reload");
 			return ResolveState("Primary.Reload");
 		}
 		if(TQ_CheckButtonHold(BT_ALTATTACK)) {
-			A_Print("Primary > Alt");
+			//A_Print("Primary > Alt");
 			return ResolveState("Alt.Ready");
 		}
 		A_WeaponReady(WRF_NOFIRE|WRF_NOPRIMARY|WRF_NOSECONDARY);
@@ -239,21 +239,21 @@ class TQ_Pistol : TQ_Weapon {
 	action state TQ_AltInput() {
 		//A_Print("Alt");
 		if(!TQ_CheckButtonHold(BT_ALTATTACK)) {
-			A_Print("Alt > Primary");
+			//A_Print("Alt > Primary");
 			invoker.DoingPressCheck = false;
 			invoker.Slide.Pressure = 0;
 			return ResolveState("Primary.Ready");
 		}
 
 		if(TQ_CheckButtonHold(BT_RELOAD)) {
-			A_Print("Alt > pulling");
+			//A_Print("Alt > pulling");
 			if(!invoker.DoingPressCheck && invoker.Slide.Pos > 0.8 && (TQ_CheckButtonHold(BT_ATTACK))) {
 				TQ_EngageSlideLock();
 			}
 			return ResolveState("Alt.PullSlide");
 		}
 		if(TQ_CheckButtonPress(BT_ATTACK)) {
-			A_Print("Alt > Release slide lock");
+			//A_Print("Alt > Release slide lock");
 			return ResolveState("Alt.ReleaseLock");
 		}
 		if(!TQ_CheckButtonHold(BT_RELOAD)) {
@@ -261,7 +261,7 @@ class TQ_Pistol : TQ_Weapon {
 			invoker.Slide.Pressure = 0;
 		}
 		if(TQ_CheckButtonHold(BT_ATTACK)) {
-			A_Print("Alt > PressCheck");
+			//A_Print("Alt > PressCheck");
 			return ResolveState("Alt.PressCheck");
 		}
 		if(invoker.DoingPressCheck && !TQ_CheckButtonHold(BT_ATTACK)) {
