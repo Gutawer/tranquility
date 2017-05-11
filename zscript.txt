@@ -85,15 +85,14 @@ class TQ_Pistol : TQ_Weapon {
 			Mags[i].MaxRounds = 7;
 			Mags[i].Rounds = random(0,Mags[i].MaxRounds);
 		}
+		if(random(0,1) == 1) Mags[MagIndex].Inserted = true;
 		super.PostBeginPlay();
 	}
 
 	override void Tick() {
-		//Bookkeeping: if no round in chamber, it can't be live either
-		if(!Chamber.Loaded) {
-			Chamber.Live=false;
-		}
-		//clamp(Slide.Pressure,0.5,0.6);
+
+		//Bookkeeping
+		if(!Chamber.Loaded) Chamber.Live=false; //if no round in chamber, it can't be live either
 
 		//Slide routines that happen automatically
 		for(int i=1; i<=100; i++) {
