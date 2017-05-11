@@ -111,13 +111,13 @@ class TQ_Pistol : TQ_Weapon {
 				Slide.Pos = clamp(Slide.Pos, 0, 1); //Allow full travel otherwise
 			}
 
-			if((!SlideMovingBack()) & (Slide.Pos < 0.8) & (!CheckSlideForward())) {
-				LoadRoundFromMag(); //Always attempt to load a round if slide going forward and past lock
+			if((!TQ_SlideMovingBack()) & (Slide.Pos < 0.8) & (!TQ_CheckSlideForward())) {
+				TQ_LoadRoundFromMag(); //Always attempt to load a round if slide going forward and past lock
 			}
 
-			if((SlideMovingBack()) & (Slide.Pos > 0.9)) {
+			if((TQ_SlideMovingBack()) & (Slide.Pos > 0.9)) {
 				Slide.Locked = false; //Disengage slide lock, will auto-engage if needed
-				EjectRound(); //Always attempt to load a round if slide going back and past 80%
+				TQ_EjectRound(); //Always attempt to eject a round if slide going back and past 80%
 			}
 
 			if(Mags[MagIndex].Inserted && Mags[MagIndex].Rounds == 0) {
@@ -216,8 +216,8 @@ class TQ_Pistol : TQ_Weapon {
 		A_OverlayFlags(SlideLayer,PSPF_ADDBOB,0);
 	}
 
+	//Primary Input Loop
 	action state TQ_PrimaryInput() {
-		//A_Print("Primary");
 		if(TQ_CheckButtonPress(BT_ATTACK)) return ResolveState("Primary.Fire");
 		if(TQ_CheckButtonPress(BT_RELOAD)) return ResolveState("Reload.Ready");
 		if(TQ_CheckButtonHold(BT_ALTATTACK)) return ResolveState("Alt.Ready");
@@ -225,6 +225,7 @@ class TQ_Pistol : TQ_Weapon {
 		return ResolveState(null);
 	}
 
+	//Alt Context Input Loop
 	action state TQ_AltInput() {
 		if(!TQ_CheckButtonHold(BT_ALTATTACK)) {
 			invoker.DoingPressCheck = false;
@@ -271,31 +272,31 @@ class TQ_Pistol : TQ_Weapon {
 	}
 
 	action void TQ_PullTrigger() {
-		if(CheckSlideForward() && invoker.Chamber.Live) {
+		if(TQ_CheckSlideForward() && invoker.Chamber.Live) {
 			invoker.Slide.Pressure = 10;
 			invoker.Chamber.Live = false;
 			A_PlaySound("weapons/pistol",CHAN_AUTO);
 		}
 	}
 
-	action void EjectRound() {
+	action void TQ_EjectRound() {
 		if(invoker.Chamber.Loaded) invoker.Chamber.Loaded=false;
 	}
 
-	action void LoadRoundFromMag() {
-		if(!invoker.Chamber.Loaded && invoker.Mags[invoker.MagIndex].Rounds > 0) {
+	action void TQ_LoadRoundFromMag() {
+		if(!invoker.Chamber.Loaded && invoker.Mags[invoker.MagIndex].Inserted && invoker.Mags[invoker.MagIndex].Rounds > 0) {
 			invoker.Chamber.Loaded = true;
 			invoker.Chamber.Live = true;
 			invoker.Mags[invoker.MagIndex].Rounds -= 1;
 		}
 	}
 
-	action void MagRelease() {
+	action void TQ_MagRelease() {
 		A_PlaySound("TQMagDrop",CHAN_AUTO);
 		invoker.Mags[invoker.MagIndex].Inserted = false;
 	}
 
-	action void MagicReload() {
+	action void TQ_MagicReload() {
 		invoker.Mags[invoker.MagIndex].Rounds = 7;
 	}
 
@@ -308,11 +309,11 @@ class TQ_Pistol : TQ_Weapon {
 		invoker.Mags[invoker.MagIndex].Inserted = true;
 	}
 
-	action bool CheckSlideForward() {
+	action bool TQ_CheckSlideForward() {
 		return (invoker.Slide.Pos == 0); //True if pos at zero
 	}
 
-	action bool SlideMovingBack() {
+	action bool TQ_SlideMovingBack() {
 		if ((invoker.Slide.Pressure - invoker.Slide.Spring > 0) & (invoker.Slide.Pos != 1) & (invoker.Slide.Pos != 0)) {
 			return true;
 		}
