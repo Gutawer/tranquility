@@ -184,6 +184,11 @@ class TQ_Pistol : TQ_Weapon {
 			TNT1 AAAA 1 A_OverlayOffset(MagLayer,0,-8,WOF_ADD);
 			Goto Reload.Ready;
 		Reload.NextMag:
+			TNT1 A 1;
+			TNT1 A 1 {
+				if(invoker.Mags[invoker.MagIndex].Inserted) return ResolveState("Reload.Ready");
+				return ResolveState(null);
+			}
 			TNT1 AAAAAAAA 1 A_OverlayOffset(MagLayer,0,8,WOF_ADD);
 			TNT1 A 0 TQ_PickNextMag;
 			TNT1 AAAAAAAA 1 A_OverlayOffset(MagLayer,0,-8,WOF_ADD);
@@ -330,10 +335,8 @@ class TQ_Pistol : TQ_Weapon {
 	}
 
 	action void TQ_PickNextMag() {
-		if(!invoker.Mags[invoker.MagIndex].Inserted) {
-			invoker.MagIndex += 1;
-			if(invoker.MagIndex > 3) invoker.MagIndex = 1;
-		}
+		invoker.MagIndex += 1;
+		if(invoker.MagIndex > 3) invoker.MagIndex = 1;
 	}
 
 	action bool TQ_CheckSlideForward() {
